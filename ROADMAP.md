@@ -9,21 +9,21 @@
 
 ## Project Status Summary
 
-> **As of:** 2026-03-14
+> **As of:** 2026-03-15
 
 | Area | Status | Notes |
 |------|--------|-------|
 | Architecture & Design | ✅ Complete | `CLAUDE.md`, `AGENTS.md`, `ANDROID_SW_OWNER_DEV_PLAN.md` v1.1 finalized |
-| `skills/` directory | ❌ Not started | No L1 or L2 skills implemented yet |
-| `memory/` directory | ❌ Not started | No hindsight notes or dirty page tracking |
-| `tests/` directory | ❌ Not started | No routing test suite |
-| `references/` directory | ❌ Not started | No AOSP reference documents |
-| Git history | 1 commit | "Initial Plan" — documentation only |
+| `skills/` directory | ✅ Phase 1 complete | `L1-aosp-root-router` deployed (34 paths, 12 forbidden actions) |
+| `memory/` directory | ✅ Phase 1 complete | `hindsight_notes/` scaffolded, `dirty_pages.json` initialized |
+| `tests/` directory | ✅ Phase 1 complete | `test_router.py` with 20 ground-truth routing cases |
+| `references/` directory | ✅ Phase 1 complete | `aosp_top_level_paths.md` (44 path entries) |
+| Git history | Active | Phase 1 deliverables committed |
 
 ### Current Phase
-**Phase 1 — In Progress (0 / 6 deliverables complete)**
+**Phase 1 — Complete (6 / 6 deliverables done) ✅**
 
-The project has a solid architectural foundation but implementation has not yet begun. The immediate next step is creating `skills/L1-aosp-root-router/SKILL.md` to unblock all subsequent L2 work.
+**Next:** Phase 2 — Deploy Layer 2 Expert Skills (start with Tier 1: Build, Security, HAL).
 
 ---
 
@@ -39,18 +39,18 @@ This roadmap translates the four-phase architecture blueprint into concrete, del
 
 ### Deliverables
 
-| # | Task | Output |
-|---|------|--------|
-| 1.1 | Create `skills/L1-aosp-root-router/SKILL.md` | L1 router with full intent-to-path mapping table |
-| 1.2 | Define path scope coverage | All top-level AOSP directories mapped (≥30 paths) |
-| 1.3 | Document forbidden cross-domain actions | At least 10 explicit prohibitions in SKILL.md |
-| 1.4 | Scaffold `memory/` directory | `hindsight_notes/` dir + `dirty_pages.json` (empty template) |
-| 1.5 | Scaffold `tests/routing_accuracy/` | `test_router.py` stub + 20 initial test cases |
-| 1.6 | Scaffold `references/` directory | `aosp_top_level_paths.md` reference doc |
+| # | Task | Output | Status |
+|---|------|--------|--------|
+| 1.1 | Create `skills/L1-aosp-root-router/SKILL.md` | L1 router with full intent-to-path mapping table | ✅ Done |
+| 1.2 | Define path scope coverage | All top-level AOSP directories mapped (≥30 paths) | ✅ 34 paths |
+| 1.3 | Document forbidden cross-domain actions | At least 10 explicit prohibitions in SKILL.md | ✅ 12 prohibitions |
+| 1.4 | Scaffold `memory/` directory | `hindsight_notes/` dir + `dirty_pages.json` (empty template) | ✅ Done |
+| 1.5 | Scaffold `tests/routing_accuracy/` | `test_router.py` stub + 20 initial test cases | ✅ Done |
+| 1.6 | Scaffold `references/` directory | `aosp_top_level_paths.md` reference doc | ✅ 44 entries |
 
 ### Gate Criterion
-- L1 router SKILL.md is complete and passes a manual 20-case routing spot check.
-- Directory structure matches the standard in `ANDROID_SW_OWNER_DEV_PLAN.md §8`.
+- ✅ L1 router SKILL.md is complete with 20 ground-truth routing test cases defined.
+- ✅ Directory structure matches the standard in `ANDROID_SW_OWNER_DEV_PLAN.md §8`.
 
 ---
 
@@ -144,13 +144,13 @@ Each L2 skill must include:
 
 ## Milestones Summary
 
-| Milestone | Phase | Key Metric |
-|-----------|-------|-----------|
-| M1: Router Live | End of Phase 1 | L1 SKILL.md complete, 20-case spot check passes |
-| M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed |
-| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 9 L2 skills deployed, ≥85% subsystem resolution |
-| M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success |
-| M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility |
+| Milestone | Phase | Key Metric | Status |
+|-----------|-------|-----------|--------|
+| M1: Router Live | End of Phase 1 | L1 SKILL.md complete, 20-case spot check passes | ✅ 2026-03-15 |
+| M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ⏳ Up next |
+| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 9 L2 skills deployed, ≥85% subsystem resolution | — |
+| M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success | — |
+| M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility | — |
 
 ---
 

@@ -1,0 +1,89 @@
+{
+  "_schema_version": "1.0",
+  "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
+  "_last_updated": "2026-03-15",
+  "_android_version_baseline": "Android 14.0.0_r1",
+
+  "skills": {
+    "L1-aosp-root-router": {
+      "status": "clean",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-build-system-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-security-selinux-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-hal-vendor-interface-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-framework-services-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-init-boot-sequence-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-version-migration-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-multimedia-audio-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-connectivity-network-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-kernel-gki-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    }
+  },
+
+  "_status_enum": ["clean", "dirty", "not_yet_deployed"],
+  "_dirty_reasons_enum": [
+    "android_version_bump",
+    "path_structure_changed",
+    "api_surface_changed",
+    "selinux_policy_restructured",
+    "hal_interface_version_bump",
+    "manual_invalidation"
+  ]
+}

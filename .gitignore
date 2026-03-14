@@ -1,6 +1,11 @@
 # AOSP Source & Repos
 .repo/
 .git/
+Android.bp
+BUILD
+WORKSPACE
+bootstrap.bash
+
 # AOSP Build output
 out/
 

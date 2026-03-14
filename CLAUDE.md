@@ -21,7 +21,7 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 4. **Hindsight Memory:** After solving a problem, record the "Insight" in `memory/hindsight_notes/`.
 
 ## 🛠️ Build & Test Commands
-- **Verify Routing:** Run `python3 tests/routing_accuracy/test_router.py` (when implemented).
+- **Verify Routing:** Run `python3 tests/routing_accuracy/test_router.py`
 - **Skill Linting:** Run `scripts/skill_lint.py` to verify `SKILL.md` format (when implemented).
 
 ## 🚀 Key Directories
