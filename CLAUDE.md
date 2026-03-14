@@ -30,5 +30,11 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 - `tests/`: Evaluation suites for routing and expert knowledge.
 - `references/`: General AOSP documentation.
 
+## 📂 AOSP Source Code
+The AOSP source tree is cloned into this repository for **reference only**. It exists to inform skill content — path mappings, architectural patterns, and forbidden action boundaries.
+- **Do not modify** any AOSP source files.
+- **Do not treat** AOSP source as a development deliverable.
+- All development work targets `skills/`, `memory/`, `tests/`, and `references/` exclusively.
+
 ---
 **Focus on "Path as Truth" to eliminate cross-subsystem hallucinations.**
