@@ -1,0 +1,49 @@
+# AOSP Source & Repos
+.repo/
+.git/
+# AOSP Build output
+out/
+
+# AOSP Root Directories (Exclude from this repo)
+art/
+bionic/
+bootable/
+build/
+cts/
+dalvik/
+developers/
+development/
+device/
+external/
+frameworks/
+hardware/
+kernel/
+libcore/
+libnativehelper/
+packages/
+pdk/
+platform_testing/
+prebuilts/
+sdk/
+system/
+test/
+toolchain/
+tools/
+vendor/
+
+# Local configuration
+.vscode/
+.idea/
+*.swp
+*.log
+
+# Keep Agent Skill Set related files
+!AGENTS.md
+!README.md
+!skills/
+!memory/
+!tests/
+!ANDROID_SW_OWNER_DEV_PLAN.md
+!scripts/
+!references/
+!Storage_checking_report.md
