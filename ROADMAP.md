@@ -14,16 +14,16 @@
 | Area | Status | Notes |
 |------|--------|-------|
 | Architecture & Design | ✅ Complete | `CLAUDE.md`, `AGENTS.md`, `ANDROID_SW_OWNER_DEV_PLAN.md` v1.1 finalized |
-| `skills/` directory | ✅ Phase 1 complete | `L1-aosp-root-router` deployed (34 paths, 12 forbidden actions) |
+| `skills/` directory | ✅ Phase 2 complete | L1 router + all 9 L2 expert skills deployed |
 | `memory/` directory | ✅ Phase 1 complete | `hindsight_notes/` scaffolded, `dirty_pages.json` initialized |
 | `tests/` directory | ✅ Phase 1 complete | `test_router.py` with 20 ground-truth routing cases |
 | `references/` directory | ✅ Phase 1 complete | `aosp_top_level_paths.md` (44 path entries) |
-| Git history | Active | Phase 1 deliverables committed |
+| Git history | Active | Phase 1 & 2 deliverables committed |
 
 ### Current Phase
-**Phase 1 — Complete (6 / 6 deliverables done) ✅**
+**Phase 2 — Complete (all 9 L2 skills deployed) ✅**
 
-**Next:** Phase 2 — Deploy Layer 2 Expert Skills (start with Tier 1: Build, Security, HAL).
+**Next:** Phase 3 — Cross-Skill Collaboration & Hindsight Memory.
 
 ---
 
@@ -147,9 +147,9 @@ Each L2 skill must include:
 | Milestone | Phase | Key Metric | Status |
 |-----------|-------|-----------|--------|
 | M1: Router Live | End of Phase 1 | L1 SKILL.md complete, 20-case spot check passes | ✅ 2026-03-15 |
-| M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ⏳ Up next |
-| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 9 L2 skills deployed, ≥85% subsystem resolution | — |
-| M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success | — |
+| M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ✅ 2026-03-15 |
+| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 9 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
+| M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success | ⏳ Up next |
 | M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility | — |
 
 ---
