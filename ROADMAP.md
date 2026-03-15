@@ -28,6 +28,42 @@
 
 ---
 
+## Alpha v0.1 Release — 2026-03-15
+
+> **Status:** Published to GitHub. Open for BSP engineer field testing.
+
+### What Is Released
+
+| Component | Count | Notes |
+|-----------|-------|-------|
+| L1 Router | 1 | 40 intent-to-path mappings, 19 forbidden actions |
+| L2 Expert Skills | 12 | Full SKILL.md + scripts + references per skill |
+| Automation scripts | 6 | bp_lint, audit2allow_safe, check_aidl_version, validate_rc, check_pkvm_status, validate_dirty_pages |
+| Hindsight notes | 22 | HS-001–HS-022 covering all 12 skill domains |
+| Cross-skill patterns | 12 | Named multi-skill task patterns |
+| Test cases | 100 | Ground-truth routing spec (30 multi-skill scenarios) |
+
+### Alpha Scope Statement
+
+> The skill content is complete and usable with any AI agent (Claude Code, Gemini, etc.) today.
+> Routing is performed by the AI agent using the SKILL.md specification — no compiled router binary.
+> Skills are validated against Android 14. A15 delta and automated accuracy benchmarking are Phase 4.
+
+### Known Alpha Gaps
+
+| Gap | Tracking |
+|-----|---------|
+| Router implementation (test suite runs in stub mode) | Phase 4.1 |
+| Android 15 validation pass | Phase 4.5 |
+| OEM/SoC Layer 3 extension skills | Phase 4.3 |
+| `skill_lint.py` automated conformance check | Phase 4.4 |
+
+### How to Report Alpha Feedback
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) — open a GitHub Issue for wrong paths, missing skills, or routing errors found during daily BSP work.
+
+---
+
 ## Overview
 
 This roadmap translates the four-phase architecture blueprint into concrete, deliverable milestones. Each phase has a clear gate criterion before the next phase begins.
