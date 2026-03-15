@@ -51,15 +51,18 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 - **Validate .rc files:** `python3 skills/L2-init-boot-sequence-expert/scripts/validate_rc_syntax.py <file.rc>`
 - **Check AIDL versions:** `python3 skills/L2-hal-vendor-interface-expert/scripts/check_aidl_version.py hardware/interfaces/`
 - **Check API compatibility:** `python3 skills/L2-version-migration-expert/scripts/check_api_compatibility.py <before.txt> <after.txt>`
-- **Check dirty pages:** `python3 skills/L2-version-migration-expert/scripts/check_api_compatibility.py --dirty-pages memory/dirty_pages.json`
+- **Validate dirty pages schema:** `python3 scripts/validate_dirty_pages.py`
+- **Check pKVM / AVF status:** `bash skills/L2-virtualization-pkvm-expert/scripts/check_pkvm_status.sh`
 - **Skill Linting:** `scripts/skill_lint.py` (planned — Phase 4)
 
 ## 🚀 Key Directories
 - `skills/`: Core logic of the Hierarchical Agent (L1 + 12 × L2 deployed).
-- `memory/hindsight_notes/`: Persistent insight library built up over time.
+- `memory/hindsight_notes/`: Persistent insight library — 22 seed insights (HS-001–HS-022).
+- `memory/cross_skill_triggers.md`: 12 named patterns for multi-skill task routing.
 - `memory/dirty_pages.json`: Tracks which skills need refresh after an OS version bump.
-- `tests/routing_accuracy/`: Routing accuracy evaluation suite (26 ground-truth cases).
-- `references/`: General AOSP documentation (`aosp_top_level_paths.md`).
+- `scripts/validate_dirty_pages.py`: Schema validator for dirty_pages.json.
+- `tests/routing_accuracy/`: Routing accuracy evaluation suite — 100 cases (30 multi-skill).
+- `references/`: General AOSP documentation (`aosp_top_level_paths.md` v1.2, 49 paths).
 
 ## 📂 AOSP Source Code
 The AOSP source tree is cloned into this repository for **reference only**. It exists to inform skill content — path mappings, architectural patterns, and forbidden action boundaries.

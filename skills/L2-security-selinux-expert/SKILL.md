@@ -170,6 +170,7 @@ m CtsSecurityHostTestCases
 | New daemon is a HAL service needing `hwservice_contexts` | `L2-hal-vendor-interface-expert` |
 | SELinux issue is in a Java system service | `L2-framework-services-expert` |
 | Build fails when compiling updated sepolicy | `L2-build-system-expert` |
+| SELinux denial involves `/dev/kvm`, `virtualizationservice`, or Microdroid guest policy | `L2-virtualization-pkvm-expert` |
 
 Emit `[L2 SECURITY → HANDOFF]` before transferring.
 

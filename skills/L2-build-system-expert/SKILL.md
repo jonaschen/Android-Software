@@ -148,6 +148,7 @@ grep -r "<lib_name>" build/make/target/product/vndk/
 | New system service `.rc` file required | `L2-init-boot-sequence-expert` |
 | API surface impact of a new java_library | `L2-framework-services-expert` |
 | Build error caused by kernel module config | `L2-kernel-gki-expert` |
+| `rust_binary` or `rust_library` build failure in AVF/crosvm | `L2-virtualization-pkvm-expert` |
 
 Emit `[L2 BUILD → HANDOFF]` before transferring.
 

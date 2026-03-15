@@ -256,6 +256,7 @@ adb shell cat /sys/devices/system/cpu/cpu*/online
 | KeyMint HAL AIDL interface (non-secure side) | `L2-hal-vendor-interface-expert` |
 | SELinux denial for Trusty device node (`/dev/trusty-ipc-dev0`) | `L2-security-selinux-expert` |
 | Build system packaging of BL31/BL32/FIP images | `L2-build-system-expert` |
+| pKVM EL2 interaction with ATF BL31 via HVC/SMC | `L2-virtualization-pkvm-expert` |
 
 Emit `[L2 ATF → HANDOFF]` before transferring.
 

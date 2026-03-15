@@ -242,6 +242,7 @@ adb shell ls /sys/devices/<path>/
 | Kernel module packaging in `Android.bp` | `L2-build-system-expert` |
 | `insmod` in `.rc` file at early-init | `L2-init-boot-sequence-expert` |
 | Kernel ABI changes in an Android version upgrade | `L2-version-migration-expert` |
+| pKVM EL2 issue in `arch/arm64/kvm/hyp/` or `/dev/kvm` behaviour | `L2-virtualization-pkvm-expert` |
 
 Emit `[L2 KERNEL → HANDOFF]` before transferring.
 

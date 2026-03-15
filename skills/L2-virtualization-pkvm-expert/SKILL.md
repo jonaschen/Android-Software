@@ -188,14 +188,16 @@ atest MicrodroidTests
 
 ## Handoff Rules
 
-| Condition | Escalate To |
-|-----------|-------------|
+| Condition | Hand off to |
+|-----------|------------|
 | pKVM EL2 code change in `arch/arm64/kvm/hyp/` | `L2-kernel-gki-expert` |
-| Guest or host SELinux avc:denied involving `/dev/kvm` | `L2-security-selinux-expert` |
+| Guest or host SELinux avc:denied involving `/dev/kvm` or Microdroid policy | `L2-security-selinux-expert` |
 | SMC call interaction between pKVM and ATF BL31 | `L2-trusted-firmware-atf-expert` |
 | `VirtualMachineManager` API surface change | `L2-framework-services-expert` |
 | `Android.bp` build issues for `rust_binary` AVF targets | `L2-build-system-expert` |
 | Android version migration (AVF API compat) | `L2-version-migration-expert` |
+
+Emit `[L2 VIRT → HANDOFF]` before transferring.
 
 ---
 

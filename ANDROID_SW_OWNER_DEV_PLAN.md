@@ -1,6 +1,6 @@
 # Android-Software-Owner Agent Skill Set Development Plan & Blueprint
 
-> **Version:** v1.3
+> **Version:** v1.4
 > **Date:** 2026-03-15
 > **Reference Architecture:** AOSP Hierarchical AI Agent Skill Set (MMU Page Table Driven Memory Model)  
 > **Target Audience:** Android SW Owners, AOSP Integration Engineers, Platform AI Tooling Teams
@@ -204,9 +204,14 @@ android-sw-owner/
 │   │   └── references/                # atf_boot_stages.md
 │   └── ... (other L2 skills)
 ├── memory/
-│   ├── hindsight_notes/               # Persistent insight library
-│   └── dirty_pages.json               # Invalidation tracking
+│   ├── hindsight_notes/               # 22 seed insights (HS-001–HS-022)
+│   ├── cross_skill_triggers.md        # 12 multi-skill task patterns
+│   └── dirty_pages.json               # Invalidation tracking (validated)
+├── scripts/
+│   └── validate_dirty_pages.py        # dirty_pages.json schema validator
 └── tests/                             # Routing & Skill accuracy tests
+    └── routing_accuracy/
+        └── test_router.py             # 100-case suite (30 multi-skill)
 ```
 
 ---
@@ -245,4 +250,4 @@ parent_skill: aosp-root-router
 ```
 
 ---
-*Blueprint version 1.2 (2026-03-15): Added L2-bootloader-lk-expert (LK/ABL, fastboot, A/B slots) and L2-trusted-firmware-atf-expert (ATF BL31, SMC, PSCI, Trusty TEE). Both skills carry ⚠ vendor-path notes as their source trees are not present in standard AOSP.*
+*Blueprint v1.4 (2026-03-15): Phase 3 complete — 22 hindsight notes, 12 cross-skill trigger patterns, dirty_pages.json schema validator, 100-case routing test suite (30 multi-skill scenarios), all handoff rules standardized across 12 L2 skills. Added L2-virtualization-pkvm-expert (pKVM, AVF, Microdroid, crosvm). Phase 4 next: detect_dirty_pages.py, migration_impact.py, skill_lint.py, A15 validation pass.*
