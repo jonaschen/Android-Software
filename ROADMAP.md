@@ -14,14 +14,14 @@
 | Area | Status | Notes |
 |------|--------|-------|
 | Architecture & Design | ✅ Complete | `CLAUDE.md`, `AGENTS.md`, `ANDROID_SW_OWNER_DEV_PLAN.md` v1.1 finalized |
-| `skills/` directory | ✅ Phase 2 complete | L1 router + all 9 L2 expert skills deployed |
+| `skills/` directory | ✅ Phase 2 complete | L1 router + all 12 L2 expert skills deployed |
 | `memory/` directory | ✅ Phase 1 complete | `hindsight_notes/` scaffolded, `dirty_pages.json` initialized |
 | `tests/` directory | ✅ Phase 1 complete | `test_router.py` with 20 ground-truth routing cases |
 | `references/` directory | ✅ Phase 1 complete | `aosp_top_level_paths.md` (44 path entries) |
 | Git history | Active | Phase 1 & 2 deliverables committed |
 
 ### Current Phase
-**Phase 2 — Complete (all 9 L2 skills deployed) ✅**
+**Phase 2 — Complete (all 12 L2 skills deployed) ✅**
 
 **Next:** Phase 3 — Cross-Skill Collaboration & Hindsight Memory.
 
@@ -45,7 +45,7 @@ This roadmap translates the four-phase architecture blueprint into concrete, del
 | 1.2 | Define path scope coverage | All top-level AOSP directories mapped (≥30 paths) | ✅ 34 paths |
 | 1.3 | Document forbidden cross-domain actions | At least 10 explicit prohibitions in SKILL.md | ✅ 12 prohibitions |
 | 1.4 | Scaffold `memory/` directory | `hindsight_notes/` dir + `dirty_pages.json` (empty template) | ✅ Done |
-| 1.5 | Scaffold `tests/routing_accuracy/` | `test_router.py` stub + 20 initial test cases | ✅ Done |
+| 1.5 | Scaffold `tests/routing_accuracy/` | `test_router.py` stub + 26 routing test cases | ✅ Done |
 | 1.6 | Scaffold `references/` directory | `aosp_top_level_paths.md` reference doc | ✅ 44 entries |
 
 ### Gate Criterion
@@ -77,6 +77,7 @@ This roadmap translates the four-phase architecture blueprint into concrete, del
 | `L2-version-migration-expert` | Cross-cutting (diff analysis) | A14→A15 delta checklist, 16KB page migration guide, API compatibility matrix |
 | `L2-bootloader-lk-expert` | `bootloader/lk/`, `bootable/bootloader/` ¹ | LK boot flow doc, fastboot protocol guide, A/B slot reference |
 | `L2-trusted-firmware-atf-expert` | `atf/`, `trusty/` ¹ | ATF boot stages doc, SMC calling convention guide, PSCI reference |
+| `L2-virtualization-pkvm-expert` | `packages/modules/Virtualization/`, `external/crosvm/` | pKVM EL2 architecture doc, crosvm VMM guide, Microdroid boot flow, vsock IPC reference |
 
 #### Tier 3 — Standard Priority (Subsystem specialists)
 
@@ -97,7 +98,7 @@ Each L2 skill must include:
 > ¹ Vendor-supplied paths — not in standard AOSP; confirmed at routing time by BSP layout.
 
 ### Gate Criterion
-- All 11 L2 SKILL.md files present and conforming to template.
+- All 12 L2 SKILL.md files present and conforming to template.
 - Each skill passes a 10-case subsystem-specific routing test.
 - Target: ≥85% subsystem resolution rate.
 
@@ -152,7 +153,7 @@ Each L2 skill must include:
 |-----------|-------|-----------|--------|
 | M1: Router Live | End of Phase 1 | L1 SKILL.md complete, 20-case spot check passes | ✅ 2026-03-15 |
 | M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ✅ 2026-03-15 |
-| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 11 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
+| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 12 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
 | M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success | ⏳ Up next |
 | M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility | — |
 
@@ -170,4 +171,4 @@ Each L2 skill must include:
 
 ---
 
-*Roadmap v1.0 — derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.1*
+*Roadmap v1.1 — updated for L2-virtualization-pkvm-expert (12 L2 skills, 26 test cases). Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.3*

@@ -1,6 +1,6 @@
 # Android-Software-Owner Agent Skill Set Development Plan & Blueprint
 
-> **Version:** v1.2
+> **Version:** v1.3
 > **Date:** 2026-03-15
 > **Reference Architecture:** AOSP Hierarchical AI Agent Skill Set (MMU Page Table Driven Memory Model)  
 > **Target Audience:** Android SW Owners, AOSP Integration Engineers, Platform AI Tooling Teams
@@ -117,9 +117,14 @@ Android-Software-Owner Skill Set
 │   └── little-kernel (LK) / ABL, Fastboot protocol, Partition table, A/B slots, AVB.
 │   └── ⚠ Paths are vendor/SoC-supplied (bootloader/lk/); not in standard AOSP.
 │
-└── 🔐 [L2-ATF] trusted-firmware-atf-expert
-    └── ARM Trusted Firmware (TF-A), BL1/BL2/BL31/BL32, SMC, PSCI, TrustZone, Trusty TEE.
-    └── ⚠ Paths are vendor/SoC-supplied (atf/, trusty/); not in standard AOSP.
+├── 🔐 [L2-ATF] trusted-firmware-atf-expert
+│   └── ARM Trusted Firmware (TF-A), BL1/BL2/BL31/BL32, SMC, PSCI, TrustZone, Trusty TEE.
+│   └── ⚠ Paths are vendor/SoC-supplied (atf/, trusty/); not in standard AOSP.
+│
+└── 🖥️  [L2-VIRT] virtualization-pkvm-expert
+    └── pKVM (EL2 stage-2 isolation), Android Virtualization Framework (AVF),
+    └── VirtualizationService, crosvm VMM, Microdroid guest OS, vsock IPC, vmbase.
+    └── Paths: packages/modules/Virtualization/, external/crosvm/
 ```
 
 ---

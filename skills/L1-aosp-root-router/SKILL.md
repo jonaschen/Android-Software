@@ -58,6 +58,12 @@ This skill covers the entire AOSP root. All paths below are authoritative physic
 | Fastboot commands, `aboot`, A/B slot selection, boot image loading, AVB | `bootloader/lk/app/aboot/` ¹ | `L2-bootloader-lk-expert` |
 | ARM Trusted Firmware, ATF, TF-A, BL1, BL2, BL31, BL32, Secure Monitor (EL3) | `atf/`, `arm-trusted-firmware/` ¹ | `L2-trusted-firmware-atf-expert` |
 | TrustZone, SMC handlers, PSCI, Trusty TEE, OP-TEE, secure boot chain | `trusty/`, `atf/`, `vendor/*/trustzone/` ¹ | `L2-trusted-firmware-atf-expert` |
+| pKVM, Protected KVM, `/dev/kvm`, EL2 hypervisor, stage-2 page tables, VMID | `packages/modules/Virtualization/`, `kernel/` (arch/arm64/kvm/) | `L2-virtualization-pkvm-expert` |
+| Android Virtualization Framework (AVF), VirtualMachineManager, VirtualizationService | `packages/modules/Virtualization/`, `packages/modules/Virtualization/javalib/` | `L2-virtualization-pkvm-expert` |
+| Microdroid, pVM, protected VM, microdroid_manager, VM payload, guest OS | `packages/modules/Virtualization/microdroid/` | `L2-virtualization-pkvm-expert` |
+| crosvm, Rust VMM, virtio-blk, virtio-net, virtio-vsock, vhost-user | `external/crosvm/` | `L2-virtualization-pkvm-expert` |
+| vsock, AF_VSOCK, host-to-guest IPC, VMADDR_CID_HOST | `packages/modules/Virtualization/`, `external/crosvm/` | `L2-virtualization-pkvm-expert` |
+| vmbase, bare-metal Rust, early-boot VM | `packages/modules/Virtualization/libs/vmbase/` | `L2-virtualization-pkvm-expert` |
 | ART runtime, dex compilation, garbage collection | `art/` | (Future: `L2-art-runtime-expert`) — use `L2-framework-services-expert` as interim |
 | Bionic libc, linker, dynamic linking | `bionic/`, `bionic/linker/` | `L2-build-system-expert` (build boundary) or `L2-kernel-gki-expert` (linker/ABI) |
 | Device-specific config, board config | `device/`, `device/<OEM>/<product>/` | Route to relevant L2 by content type (sepolicy → security, HAL → hal, build → build) |
@@ -93,7 +99,7 @@ This skill is **always** the first to load. There are no exceptions. Activate on
 2. Look up each in the Intent-to-Path Mapping Table above.
 3. If ONE L2 skill covers all matched paths → load that skill exclusively.
 4. If MULTIPLE L2 skills are needed → load in priority order:
-     Security > Build > HAL > Framework > Init > Bootloader > ATF > Migration > Media > Connectivity > Kernel
+     Security > Build > HAL > Framework > Init > Bootloader > ATF > Virtualization > Migration > Media > Connectivity > Kernel
 5. If NO path match → ask the user for clarification; do NOT guess.
 6. Record the routing decision as a one-line log before handing off.
 ```
@@ -120,6 +126,9 @@ The following actions are **absolutely prohibited** by this router. Violating th
 14. **Forbidden:** Routing ARM Trusted Firmware (ATF/TF-A) or SMC handler tasks to `L2-kernel-gki-expert` — ATF runs in EL3 (Secure Monitor), a completely separate execution context from the Linux kernel; route to `L2-trusted-firmware-atf-expert`.
 15. **Forbidden:** Conflating Trusty OS (`trusty/`) with the Linux kernel (`kernel/`) — Trusty is a secure-world TEE OS running as ATF BL32 in Secure EL1; route to `L2-trusted-firmware-atf-expert`.
 16. **Forbidden:** Asserting that `bootloader/lk/`, `atf/`, or `trusty/` exist in vanilla AOSP — these are vendor/SoC-supplied trees; always confirm BSP layout before citing a path.
+17. **Forbidden:** Routing pKVM EL2 issues to `L2-trusted-firmware-atf-expert` — pKVM runs at EL2 (Non-Secure hypervisor), ATF runs at EL3 (Secure Monitor); they are separate exception levels.
+18. **Forbidden:** Routing crosvm or VirtualizationService questions to `L2-hal-vendor-interface-expert` — AVF is a mainline module with its own AIDL interface, not a vendor HAL.
+19. **Forbidden:** Assuming `/dev/kvm` is present on all Android devices — pKVM requires both kernel config (`CONFIG_KVM=y`) and explicit hypervisor enablement; always check `ro.boot.hypervisor.protected_vm.supported` first.
 
 ---
 

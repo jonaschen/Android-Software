@@ -90,6 +90,16 @@
       "dirty_reason": null,
       "affected_paths": [],
       "_note": "Paths (atf/, trusty/) are vendor/SoC-supplied, not in standard AOSP."
+    },
+    "L2-virtualization-pkvm-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": [
+        "packages/modules/Virtualization/",
+        "external/crosvm/"
+      ]
     }
   },
 

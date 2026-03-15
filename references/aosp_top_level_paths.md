@@ -30,6 +30,7 @@
 | `development/` | SDK tools, emulator, VNDK snapshot tools | SDK / Build | `L2-build-system-expert` |
 | `device/` | Device-specific configurations, board configs, `.rc` overlays | Device / OEM | Route by content: build→build, sepolicy→security, HAL→hal, init→init |
 | `external/` | Upstream open-source mirrors (LLVM, OpenSSL, etc.) | External Deps | Route to consuming subsystem's L2; do NOT edit directly |
+| `external/crosvm/` | crosvm Rust VMM — virtio device backends, vhost-user, KVM bindings | Virtualization / pKVM | `L2-virtualization-pkvm-expert` |
 | `frameworks/` | Android framework — Java services, native libs, AV stack | Framework | Multiple L2 — see sub-paths below |
 | `frameworks/av/` | Audio, Video, Camera, MediaCodec stack | Multimedia | `L2-multimedia-audio-expert` |
 | `frameworks/base/` | Core Java framework, SystemServer, system APIs | Framework | `L2-framework-services-expert` |
@@ -48,6 +49,9 @@
 | `packages/` | System apps, services packaged as APKs | Apps / Connectivity | Route by package: Connectivity→connectivity, Bluetooth→connectivity, apps→framework |
 | `packages/apps/Bluetooth/` | Bluetooth system app | Connectivity | `L2-connectivity-network-expert` |
 | `packages/modules/Connectivity/` | Network stack mainline module | Connectivity | `L2-connectivity-network-expert` |
+| `packages/modules/Virtualization/` | Android Virtualization Framework (AVF) — VirtualizationService, Microdroid, crosvm integration, vmbase | Virtualization / pKVM | `L2-virtualization-pkvm-expert` |
+| `packages/modules/Virtualization/microdroid/` | Microdroid minimal guest OS, microdroid_manager, guest init | Virtualization / pKVM | `L2-virtualization-pkvm-expert` |
+| `packages/modules/Virtualization/javalib/` | VirtualMachineManager Java API surface | Virtualization / pKVM | `L2-virtualization-pkvm-expert` |
 | `packages/modules/Wifi/` | Wi-Fi mainline module | Connectivity | `L2-connectivity-network-expert` |
 | `pdk/` | Platform Development Kit — HAL compliance testing stubs | HAL / Testing | `L2-hal-vendor-interface-expert` |
 | `platform_testing/` | Platform-level integration test harness | Testing | Route to subsystem under test |
@@ -100,7 +104,9 @@
 | `/bootloader/lk/` ¹ | `L2-bootloader-lk-expert` | `L2-init-boot-sequence-expert` (boot overlap) |
 | `/atf/` ¹ | `L2-trusted-firmware-atf-expert` | — |
 | `/trusty/` ¹ | `L2-trusted-firmware-atf-expert` | — |
+| `/packages/modules/Virtualization/` | `L2-virtualization-pkvm-expert` | `L2-security-selinux-expert` (guest policy), `L2-kernel-gki-expert` (pKVM EL2) |
+| `/external/crosvm/` | `L2-virtualization-pkvm-expert` | — |
 
 ---
 
-*Reference document v1.1 (2026-03-15): Added LK bootloader (`bootloader/lk/`, `bootable/bootloader/`) and ATF (`atf/`, `trusty/`) path entries. Vendor-supplied paths marked ¹.*
+*Reference document v1.2 (2026-03-15): Added LK bootloader (`bootloader/lk/`, `bootable/bootloader/`), ATF (`atf/`, `trusty/`), and AVF/pKVM (`packages/modules/Virtualization/`, `external/crosvm/`) path entries. Vendor-supplied paths marked ¹.*

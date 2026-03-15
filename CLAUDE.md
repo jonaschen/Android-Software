@@ -12,7 +12,7 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 ### Layer 1
 | Skill | Path Scope |
 |-------|-----------|
-| `skills/L1-aosp-root-router/` | All AOSP root paths — 34 mappings, 12 forbidden actions |
+| `skills/L1-aosp-root-router/` | All AOSP root paths — 40 mappings, 19 forbidden actions |
 
 ### Layer 2
 | Skill | Path Scope | Script | Reference |
@@ -28,6 +28,7 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 | `skills/L2-kernel-gki-expert/` | `kernel/`, `drivers/` | `check_gki_symbol_list.sh` | `gki_module_development_guide.md` |
 | `skills/L2-bootloader-lk-expert/` | `bootloader/lk/`, `bootable/bootloader/` ¹ | `fastboot_check.sh` | `lk_boot_flow.md` |
 | `skills/L2-trusted-firmware-atf-expert/` | `atf/`, `trusty/` ¹ | `atf_image_verify.sh` | `atf_boot_stages.md` |
+| `skills/L2-virtualization-pkvm-expert/` | `packages/modules/Virtualization/`, `external/crosvm/` | `check_pkvm_status.sh` | `pkvm_microdroid_architecture.md` |
 
 > ¹ Vendor-supplied paths — not present in standard AOSP. Routing is by subsystem, not path presence.
 
@@ -54,10 +55,10 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 - **Skill Linting:** `scripts/skill_lint.py` (planned — Phase 4)
 
 ## 🚀 Key Directories
-- `skills/`: Core logic of the Hierarchical Agent (L1 + 9 × L2 deployed).
+- `skills/`: Core logic of the Hierarchical Agent (L1 + 12 × L2 deployed).
 - `memory/hindsight_notes/`: Persistent insight library built up over time.
 - `memory/dirty_pages.json`: Tracks which skills need refresh after an OS version bump.
-- `tests/routing_accuracy/`: Routing accuracy evaluation suite (20 ground-truth cases).
+- `tests/routing_accuracy/`: Routing accuracy evaluation suite (26 ground-truth cases).
 - `references/`: General AOSP documentation (`aosp_top_level_paths.md`).
 
 ## 📂 AOSP Source Code

@@ -228,6 +228,29 @@ TEST_CASES: List[RoutingTestCase] = [
               "The non-secure side (tipc driver) would route to L2-kernel-gki-expert, "
               "but the BL32 initialization failure is squarely in ATF/Trusty territory.",
     ),
+
+    # --- pKVM / Android Virtualization Framework (2 cases) ---
+    RoutingTestCase(
+        id="TC-025",
+        description="I'm getting 'ro.boot.hypervisor.protected_vm.supported=0' on a device that should support pKVM. How do I enable protected VMs and verify that /dev/kvm is configured correctly for pKVM stage-2 isolation?",
+        expected_paths=["packages/modules/Virtualization/", "kernel/"],
+        expected_skill="L2-virtualization-pkvm-expert",
+        notes="pKVM enablement spans the kernel (CONFIG_KVM, EL2 hyp init in arch/arm64/kvm/hyp/) "
+              "and the AVF mainline module (VirtualizationService checks hypervisor props). "
+              "This is NOT a kernel-only task (L2-kernel-gki-expert) nor a framework task "
+              "(L2-framework-services-expert); pKVM-specific routing applies.",
+    ),
+    RoutingTestCase(
+        id="TC-026",
+        description="My Microdroid VM payload cannot connect to the host app via vsock. The host connects to port 5678 but the guest microdroid_manager never receives the connection. How do I debug vsock connectivity between host and guest?",
+        expected_paths=["packages/modules/Virtualization/microdroid/", "external/crosvm/"],
+        expected_skill="L2-virtualization-pkvm-expert",
+        notes="vsock (AF_VSOCK) host↔guest IPC is implemented by the crosvm virtio-vsock backend "
+              "(external/crosvm/devices/src/virtio/vsock/) and consumed by microdroid_manager. "
+              "This is not a connectivity/netd task (L2-connectivity-network-expert) — vsock "
+              "bypasses the network stack entirely. SELinux vsock denials would additionally "
+              "involve L2-security-selinux-expert.",
+    ),
 ]
 
 
