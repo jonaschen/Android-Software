@@ -75,6 +75,8 @@ This roadmap translates the four-phase architecture blueprint into concrete, del
 | `L2-framework-services-expert` | `frameworks/base/`, `frameworks/native/` | SystemServer lifecycle doc, @SystemApi usage guide, ANR prevention patterns |
 | `L2-init-boot-sequence-expert` | `system/core/init/`, `*.rc` files | RC syntax reference, boot phase diagram, overlay rules guide |
 | `L2-version-migration-expert` | Cross-cutting (diff analysis) | A14→A15 delta checklist, 16KB page migration guide, API compatibility matrix |
+| `L2-bootloader-lk-expert` | `bootloader/lk/`, `bootable/bootloader/` ¹ | LK boot flow doc, fastboot protocol guide, A/B slot reference |
+| `L2-trusted-firmware-atf-expert` | `atf/`, `trusty/` ¹ | ATF boot stages doc, SMC calling convention guide, PSCI reference |
 
 #### Tier 3 — Standard Priority (Subsystem specialists)
 
@@ -92,8 +94,10 @@ Each L2 skill must include:
 - [ ] Defined `Trigger Conditions` and `Handoff Rules` to adjacent skills
 - [ ] Explicit `Forbidden Actions` list (minimum 5 entries)
 
+> ¹ Vendor-supplied paths — not in standard AOSP; confirmed at routing time by BSP layout.
+
 ### Gate Criterion
-- All 9 L2 SKILL.md files present and conforming to template.
+- All 11 L2 SKILL.md files present and conforming to template.
 - Each skill passes a 10-case subsystem-specific routing test.
 - Target: ≥85% subsystem resolution rate.
 
@@ -148,7 +152,7 @@ Each L2 skill must include:
 |-----------|-------|-----------|--------|
 | M1: Router Live | End of Phase 1 | L1 SKILL.md complete, 20-case spot check passes | ✅ 2026-03-15 |
 | M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ✅ 2026-03-15 |
-| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 9 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
+| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 11 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
 | M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success | ⏳ Up next |
 | M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility | — |
 

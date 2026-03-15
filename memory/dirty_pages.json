@@ -74,6 +74,22 @@
       "last_validated": null,
       "dirty_reason": null,
       "affected_paths": []
+    },
+    "L2-bootloader-lk-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_note": "Paths (bootloader/lk/, atf/) are vendor/SoC-supplied, not in standard AOSP."
+    },
+    "L2-trusted-firmware-atf-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_note": "Paths (atf/, trusty/) are vendor/SoC-supplied, not in standard AOSP."
     }
   },
 

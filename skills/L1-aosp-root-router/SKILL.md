@@ -54,6 +54,10 @@ This skill covers the entire AOSP root. All paths below are authoritative physic
 | Bluetooth, BluetoothService, BT HAL | `packages/apps/Bluetooth/`, `system/bt/`, `hardware/interfaces/bluetooth/` | `L2-connectivity-network-expert` |
 | GKI kernel modules, loadable modules, Kconfig | `kernel/`, `drivers/`, `common/` | `L2-kernel-gki-expert` |
 | Kernel driver interface, vendor kernel module | `drivers/`, `kernel/configs/` | `L2-kernel-gki-expert` |
+| little-kernel bootloader, LK source, fastboot protocol, partition table, ABL | `bootloader/lk/`, `bootable/bootloader/` ¹ | `L2-bootloader-lk-expert` |
+| Fastboot commands, `aboot`, A/B slot selection, boot image loading, AVB | `bootloader/lk/app/aboot/` ¹ | `L2-bootloader-lk-expert` |
+| ARM Trusted Firmware, ATF, TF-A, BL1, BL2, BL31, BL32, Secure Monitor (EL3) | `atf/`, `arm-trusted-firmware/` ¹ | `L2-trusted-firmware-atf-expert` |
+| TrustZone, SMC handlers, PSCI, Trusty TEE, OP-TEE, secure boot chain | `trusty/`, `atf/`, `vendor/*/trustzone/` ¹ | `L2-trusted-firmware-atf-expert` |
 | ART runtime, dex compilation, garbage collection | `art/` | (Future: `L2-art-runtime-expert`) — use `L2-framework-services-expert` as interim |
 | Bionic libc, linker, dynamic linking | `bionic/`, `bionic/linker/` | `L2-build-system-expert` (build boundary) or `L2-kernel-gki-expert` (linker/ABI) |
 | Device-specific config, board config | `device/`, `device/<OEM>/<product>/` | Route to relevant L2 by content type (sepolicy → security, HAL → hal, build → build) |
@@ -61,6 +65,11 @@ This skill covers the entire AOSP root. All paths below are authoritative physic
 | Prebuilts, toolchain, NDK, SDK | `prebuilts/`, `toolchain/`, `sdk/` | `L2-build-system-expert` |
 | Platform testing, test harness | `platform_testing/`, `test/` | Route to relevant L2 by subsystem under test |
 | External open-source libraries | `external/` | Route to relevant L2 by consuming subsystem |
+
+> ¹ **Vendor-supplied paths:** Paths marked ¹ (`bootloader/lk/`, `atf/`, `trusty/`) are **not
+> present in standard AOSP**. They are provided by the SoC/OEM BSP. Always confirm the actual
+> BSP directory layout before asserting a path. These skills still apply when the user's task
+> is about LK or ATF — the routing is by subsystem, not by AOSP path presence.
 
 ---
 
@@ -84,7 +93,7 @@ This skill is **always** the first to load. There are no exceptions. Activate on
 2. Look up each in the Intent-to-Path Mapping Table above.
 3. If ONE L2 skill covers all matched paths → load that skill exclusively.
 4. If MULTIPLE L2 skills are needed → load in priority order:
-     Security > Build > HAL > Framework > Init > Migration > Media > Connectivity > Kernel
+     Security > Build > HAL > Framework > Init > Bootloader > ATF > Migration > Media > Connectivity > Kernel
 5. If NO path match → ask the user for clarification; do NOT guess.
 6. Record the routing decision as a one-line log before handing off.
 ```
@@ -107,6 +116,10 @@ The following actions are **absolutely prohibited** by this router. Violating th
 10. **Forbidden:** Answering subsystem-specific questions at the L1 layer — L1 routes only; all answers come from the appropriate L2 expert.
 11. **Forbidden:** Modifying AOSP source files in this repository — the AOSP tree is reference-only per `CLAUDE.md`.
 12. **Forbidden:** Assuming `vendor/` and `system/` are the same partition — Treble enforces a strict ABI boundary between them.
+13. **Forbidden:** Routing little-kernel (LK) or fastboot issues to `L2-init-boot-sequence-expert` — LK runs before the kernel and `init`; route to `L2-bootloader-lk-expert`.
+14. **Forbidden:** Routing ARM Trusted Firmware (ATF/TF-A) or SMC handler tasks to `L2-kernel-gki-expert` — ATF runs in EL3 (Secure Monitor), a completely separate execution context from the Linux kernel; route to `L2-trusted-firmware-atf-expert`.
+15. **Forbidden:** Conflating Trusty OS (`trusty/`) with the Linux kernel (`kernel/`) — Trusty is a secure-world TEE OS running as ATF BL32 in Secure EL1; route to `L2-trusted-firmware-atf-expert`.
+16. **Forbidden:** Asserting that `bootloader/lk/`, `atf/`, or `trusty/` exist in vanilla AOSP — these are vendor/SoC-supplied trees; always confirm BSP layout before citing a path.
 
 ---
 

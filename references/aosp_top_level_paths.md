@@ -9,11 +9,18 @@
 
 ## Directory Map
 
+> ¹ **Vendor-supplied paths** — not present in standard AOSP; provided by the SoC/OEM BSP.
+
 | Path | Description | Owning Subsystem | L2 Expert Skill |
 |------|-------------|------------------|-----------------|
 | `art/` | Android Runtime — dex compiler, GC, interpreter | ART / Runtime | Future: `L2-art-runtime-expert` |
+| `atf/` ¹ | ARM Trusted Firmware (TF-A) — BL1/BL2/BL31/BL32, EL3 Secure Monitor | Trusted Firmware / ATF | `L2-trusted-firmware-atf-expert` |
+| `arm-trusted-firmware/` ¹ | Alternative root name for ATF tree in some BSPs | Trusted Firmware / ATF | `L2-trusted-firmware-atf-expert` |
 | `bionic/` | Android C library, dynamic linker, math library | Bionic / Libc | `L2-build-system-expert` (ABI); `L2-kernel-gki-expert` (linker ABI) |
 | `bootable/` | Bootloader support code, recovery image | Boot / Init | `L2-init-boot-sequence-expert` |
+| `bootable/bootloader/` | Legacy AOSP bootloader hook (mostly stubs in standard AOSP) | Bootloader | `L2-bootloader-lk-expert` |
+| `bootloader/` ¹ | Root-level bootloader tree — present in Qualcomm and other vendor BSPs | Bootloader | `L2-bootloader-lk-expert` |
+| `bootloader/lk/` ¹ | little-kernel (LK) / ABL source — fastboot, partition, aboot, AVB | Bootloader / LK | `L2-bootloader-lk-expert` |
 | `build/` | Soong, Kati, Ninja build system infrastructure | Build System | `L2-build-system-expert` |
 | `build/make/` | Legacy GNU Make infrastructure, `envsetup.sh` | Build System | `L2-build-system-expert` |
 | `build/soong/` | Blueprint / Soong build rules and module types | Build System | `L2-build-system-expert` |
@@ -56,6 +63,7 @@
 | `test/` | VTS, CTS infrastructure, test runners | Testing | Route to subsystem under test |
 | `toolchain/` | Clang/LLVM toolchain used by AOSP | Build | `L2-build-system-expert` |
 | `tools/` | Development utilities, IDE plugins, `aidl` compiler | Build / HAL | `L2-build-system-expert`; `L2-hal-vendor-interface-expert` for `aidl/` |
+| `trusty/` ¹ | Trusty TEE OS — runs as ATF BL32 in TrustZone Secure EL1 | Trusted Firmware / ATF | `L2-trusted-firmware-atf-expert` |
 | `vendor/` | OEM/SoC proprietary code, device BSP, vendor sepolicy | Vendor / OEM | Route by content type — always check sub-path |
 
 ---
@@ -89,7 +97,10 @@
 | `/kernel/` | `L2-kernel-gki-expert` | — |
 | `/vendor/` | Varies by content | Check sub-path |
 | `/device/` | Varies by content | Check sub-path |
+| `/bootloader/lk/` ¹ | `L2-bootloader-lk-expert` | `L2-init-boot-sequence-expert` (boot overlap) |
+| `/atf/` ¹ | `L2-trusted-firmware-atf-expert` | — |
+| `/trusty/` ¹ | `L2-trusted-firmware-atf-expert` | — |
 
 ---
 
-*Reference document v1.0 — derived from AOSP 14.0.0_r1 tree structure.*
+*Reference document v1.1 (2026-03-15): Added LK bootloader (`bootloader/lk/`, `bootable/bootloader/`) and ATF (`atf/`, `trusty/`) path entries. Vendor-supplied paths marked ¹.*

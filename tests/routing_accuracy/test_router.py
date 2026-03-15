@@ -187,6 +187,47 @@ TEST_CASES: List[RoutingTestCase] = [
         notes="Common confusion: Binder is in frameworks/native/libs/binder/, NOT system/core/. "
               "Routing to system/core/ for Binder is a forbidden action per L1 SKILL.md.",
     ),
+
+    # --- little-kernel Bootloader (2 cases) ---
+    RoutingTestCase(
+        id="TC-021",
+        description="Our device is stuck in fastboot and the LK bootloader is not reading the GPT partition table correctly. Where is the partition parsing code in the LK source?",
+        expected_paths=["bootloader/lk/"],
+        expected_skill="L2-bootloader-lk-expert",
+        notes="LK runs before the kernel; partition table parsing is in bootloader/lk/app/aboot/, "
+              "NOT in system/core/ or bootable/recovery/. "
+              "Note: bootloader/lk/ is vendor-supplied, not in vanilla AOSP.",
+    ),
+    RoutingTestCase(
+        id="TC-022",
+        description="I want to add a custom 'fastboot oem unlock-debug' command to the ABL bootloader. Which source file handles fastboot OEM commands in little-kernel?",
+        expected_paths=["bootloader/lk/"],
+        expected_skill="L2-bootloader-lk-expert",
+        notes="fastboot OEM commands are registered in bootloader/lk/app/aboot/aboot.c. "
+              "This is not an init, build, or kernel task.",
+    ),
+
+    # --- ARM Trusted Firmware / ATF (2 cases) ---
+    RoutingTestCase(
+        id="TC-023",
+        description="I need to add a new SMC (Secure Monitor Call) handler in BL31 to expose a platform power-management service to the Linux kernel. Where do I make this change in the ATF source?",
+        expected_paths=["atf/"],
+        expected_skill="L2-trusted-firmware-atf-expert",
+        notes="SMC handlers are implemented in ATF BL31 (EL3 Secure Monitor), "
+              "typically in atf/plat/<vendor>/sip_svc.c. "
+              "This is NOT a kernel, init, or HAL task. "
+              "Note: atf/ is vendor-supplied, not in vanilla AOSP.",
+    ),
+    RoutingTestCase(
+        id="TC-024",
+        description="The Trusty KeyMint trusted application is failing to load on our device. The error appears during ATF BL32 initialization. Where do I debug this in the ATF/Trusty source?",
+        expected_paths=["atf/", "trusty/"],
+        expected_skill="L2-trusted-firmware-atf-expert",
+        notes="BL32 is the Trusty TEE OS dispatched by ATF BL31. "
+              "BL32 init failures route to L2-trusted-firmware-atf-expert, not L2-kernel-gki-expert. "
+              "The non-secure side (tipc driver) would route to L2-kernel-gki-expert, "
+              "but the BL32 initialization failure is squarely in ATF/Trusty territory.",
+    ),
 ]
 
 

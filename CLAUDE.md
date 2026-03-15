@@ -26,6 +26,10 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 | `skills/L2-multimedia-audio-expert/` | `frameworks/av/`, `hardware/interfaces/audio/` | `trace_audio_buffer.sh` | `audioflinger_architecture.md` |
 | `skills/L2-connectivity-network-expert/` | `packages/modules/Connectivity/`, `system/netd/` | `dump_netd_rules.sh` | `netd_connectivity_architecture.md` |
 | `skills/L2-kernel-gki-expert/` | `kernel/`, `drivers/` | `check_gki_symbol_list.sh` | `gki_module_development_guide.md` |
+| `skills/L2-bootloader-lk-expert/` | `bootloader/lk/`, `bootable/bootloader/` ¹ | `fastboot_check.sh` | `lk_boot_flow.md` |
+| `skills/L2-trusted-firmware-atf-expert/` | `atf/`, `trusty/` ¹ | `atf_image_verify.sh` | `atf_boot_stages.md` |
+
+> ¹ Vendor-supplied paths — not present in standard AOSP. Routing is by subsystem, not path presence.
 
 ## 📜 Development Standards
 
