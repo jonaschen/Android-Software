@@ -1,7 +1,7 @@
 # Android-Software-Owner Agent Skill Set Development Plan & Blueprint
 
-> **Version:** v1.1  
-> **Date:** 2026-03-14  
+> **Version:** v1.2  
+> **Date:** 2026-03-15  
 > **Reference Architecture:** AOSP Hierarchical AI Agent Skill Set (MMU Page Table Driven Memory Model)  
 > **Target Audience:** Android SW Owners, AOSP Integration Engineers, Platform AI Tooling Teams
 
@@ -110,8 +110,14 @@ Android-Software-Owner Skill Set
 ├── 📱 [L2-MIGRATION] version-migration-expert
 │   └── Diff analysis, 16KB page migration, API compatibility.
 │
-└── 🔧 [L2-KERNEL] kernel-gki-expert
-    └── GKI modules, Driver interfaces, Kconfig, Module signing.
+├── 🔧 [L2-KERNEL] kernel-gki-expert
+│   └── GKI modules, Driver interfaces, Kconfig, Module signing.
+│
+├── 🥾 [L2-BOOTLOADER] bootloader-lk-expert
+│   └── little-kernel (LK), Fastboot protocol, Partition table, ABL.
+│
+└── 🔐 [L2-ATF] trusted-firmware-atf-expert
+    └── ARM Trusted Firmware (ATF/TF-A), BL1/BL2/BL31/BL32, TrustZone, Secure Monitor.
 ```
 
 ---
@@ -156,7 +162,7 @@ Supports loading OEM-specific Layer 3 Skills from:
 
 ### Phase 2: Layer 2 Expert Deployment
 - Deploy High-Priority Skills: Build, Security, HAL.
-- Deploy Medium-Priority Skills: Framework, Init, Migration.
+- Deploy Medium-Priority Skills: Framework, Init, Migration, Bootloader (LK), Trusted Firmware (ATF).
 - Deploy Standard-Priority Skills: Media, Connectivity, Kernel.
 
 ### Phase 3: Cross-Skill Collaboration & Hindsight Memory
@@ -181,6 +187,14 @@ android-sw-owner/
 │   │   ├── SKILL.md
 │   │   ├── scripts/                   # bp_lint.sh, etc.
 │   │   └── references/                # soong_module_types.md
+│   ├── L2-bootloader-lk-expert/
+│   │   ├── SKILL.md
+│   │   ├── scripts/                   # fastboot_check.sh, etc.
+│   │   └── references/                # lk_boot_flow.md
+│   ├── L2-trusted-firmware-atf-expert/
+│   │   ├── SKILL.md
+│   │   ├── scripts/                   # atf_image_verify.sh, etc.
+│   │   └── references/                # atf_boot_stages.md
 │   └── ... (other L2 skills)
 ├── memory/
 │   ├── hindsight_notes/               # Persistent insight library
@@ -224,4 +238,4 @@ parent_skill: aosp-root-router
 ```
 
 ---
-*Blueprint version 1.1 based on Hierarchical AI Agent Skill Set research.*
+*Blueprint version 1.2 based on Hierarchical AI Agent Skill Set research. Added little-kernel (LK) and ARM Trusted Firmware (ATF) skills.*

@@ -74,6 +74,20 @@
       "last_validated": null,
       "dirty_reason": null,
       "affected_paths": []
+    },
+    "L2-bootloader-lk-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
+    },
+    "L2-trusted-firmware-atf-expert": {
+      "status": "not_yet_deployed",
+      "android_version_tested": null,
+      "last_validated": null,
+      "dirty_reason": null,
+      "affected_paths": []
     }
   },
 

@@ -75,6 +75,8 @@ This roadmap translates the four-phase architecture blueprint into concrete, del
 | `L2-framework-services-expert` | `frameworks/base/`, `frameworks/native/` | SystemServer lifecycle doc, @SystemApi usage guide, ANR prevention patterns |
 | `L2-init-boot-sequence-expert` | `system/core/init/`, `*.rc` files | RC syntax reference, boot phase diagram, overlay rules guide |
 | `L2-version-migration-expert` | Cross-cutting (diff analysis) | A14→A15 delta checklist, 16KB page migration guide, API compatibility matrix |
+| `L2-bootloader-lk-expert` | `bootloader/lk/`, `bootable/bootloader/` | LK boot flow doc, fastboot protocol guide, partition table reference |
+| `L2-trusted-firmware-atf-expert` | `atf/`, `trusty/`, `arm-trusted-firmware/` | ATF boot stages doc, TrustZone/EL3 architecture guide, secure boot chain reference |
 
 #### Tier 3 — Standard Priority (Subsystem specialists)
 
@@ -93,7 +95,7 @@ Each L2 skill must include:
 - [ ] Explicit `Forbidden Actions` list (minimum 5 entries)
 
 ### Gate Criterion
-- All 9 L2 SKILL.md files present and conforming to template.
+- All 11 L2 SKILL.md files present and conforming to template.
 - Each skill passes a 10-case subsystem-specific routing test.
 - Target: ≥85% subsystem resolution rate.
 
@@ -148,7 +150,7 @@ Each L2 skill must include:
 |-----------|-------|-----------|--------|
 | M1: Router Live | End of Phase 1 | L1 SKILL.md complete, 20-case spot check passes | ✅ 2026-03-15 |
 | M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ⏳ Up next |
-| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 9 L2 skills deployed, ≥85% subsystem resolution | — |
+| M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 11 L2 skills deployed, ≥85% subsystem resolution | — |
 | M4: Collaborative Agent | End of Phase 3 | ≥95% routing accuracy, ≥70% cross-domain success | — |
 | M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility | — |
 

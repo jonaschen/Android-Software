@@ -54,6 +54,10 @@ This skill covers the entire AOSP root. All paths below are authoritative physic
 | Bluetooth, BluetoothService, BT HAL | `packages/apps/Bluetooth/`, `system/bt/`, `hardware/interfaces/bluetooth/` | `L2-connectivity-network-expert` |
 | GKI kernel modules, loadable modules, Kconfig | `kernel/`, `drivers/`, `common/` | `L2-kernel-gki-expert` |
 | Kernel driver interface, vendor kernel module | `drivers/`, `kernel/configs/` | `L2-kernel-gki-expert` |
+| little-kernel bootloader, LK source, fastboot protocol, ABL (Android Boot Loader) | `bootloader/lk/`, `bootable/bootloader/` | `L2-bootloader-lk-expert` |
+| Partition table, boot image layout, fastboot commands, `aboot`, download mode | `bootloader/lk/`, `bootloader/` | `L2-bootloader-lk-expert` |
+| ARM Trusted Firmware, ATF, TF-A, BL1, BL2, BL31, BL32, Secure Monitor | `atf/`, `arm-trusted-firmware/`, `trusty/` | `L2-trusted-firmware-atf-expert` |
+| TrustZone, EL3 firmware, secure boot chain, OP-TEE, Trusty OS | `trusty/`, `atf/`, `vendor/*/trustzone/` | `L2-trusted-firmware-atf-expert` |
 | ART runtime, dex compilation, garbage collection | `art/` | (Future: `L2-art-runtime-expert`) — use `L2-framework-services-expert` as interim |
 | Bionic libc, linker, dynamic linking | `bionic/`, `bionic/linker/` | `L2-build-system-expert` (build boundary) or `L2-kernel-gki-expert` (linker/ABI) |
 | Device-specific config, board config | `device/`, `device/<OEM>/<product>/` | Route to relevant L2 by content type (sepolicy → security, HAL → hal, build → build) |
@@ -84,7 +88,7 @@ This skill is **always** the first to load. There are no exceptions. Activate on
 2. Look up each in the Intent-to-Path Mapping Table above.
 3. If ONE L2 skill covers all matched paths → load that skill exclusively.
 4. If MULTIPLE L2 skills are needed → load in priority order:
-     Security > Build > HAL > Framework > Init > Migration > Media > Connectivity > Kernel
+     Security > Build > HAL > Framework > Init > Bootloader > ATF > Migration > Media > Connectivity > Kernel
 5. If NO path match → ask the user for clarification; do NOT guess.
 6. Record the routing decision as a one-line log before handing off.
 ```
@@ -107,6 +111,9 @@ The following actions are **absolutely prohibited** by this router. Violating th
 10. **Forbidden:** Answering subsystem-specific questions at the L1 layer — L1 routes only; all answers come from the appropriate L2 expert.
 11. **Forbidden:** Modifying AOSP source files in this repository — the AOSP tree is reference-only per `CLAUDE.md`.
 12. **Forbidden:** Assuming `vendor/` and `system/` are the same partition — Treble enforces a strict ABI boundary between them.
+13. **Forbidden:** Routing little-kernel (LK) bootloader issues to `L2-init-boot-sequence-expert` — LK runs before the kernel/init and lives in `bootloader/lk/`; route to `L2-bootloader-lk-expert`.
+14. **Forbidden:** Routing ARM Trusted Firmware (ATF/TF-A) tasks to `L2-kernel-gki-expert` — ATF runs in EL3 (secure monitor) and lives in `atf/` or `trusty/`; route to `L2-trusted-firmware-atf-expert`.
+15. **Forbidden:** Conflating Trusty OS with the Linux kernel — Trusty is a secure-world OS running on ATF BL32; it lives in `trusty/`, not `kernel/`.
 
 ---
 

@@ -187,6 +187,26 @@ TEST_CASES: List[RoutingTestCase] = [
         notes="Common confusion: Binder is in frameworks/native/libs/binder/, NOT system/core/. "
               "Routing to system/core/ for Binder is a forbidden action per L1 SKILL.md.",
     ),
+
+    # --- little-kernel Bootloader (1 case) ---
+    RoutingTestCase(
+        id="TC-021",
+        description="Our device is stuck in fastboot and the LK (little-kernel) bootloader is not reading the partition table correctly. Where is the partition parsing code in the LK source?",
+        expected_paths=["bootloader/lk/"],
+        expected_skill="L2-bootloader-lk-expert",
+        notes="LK runs before the kernel; partition table parsing is in the LK bootloader, "
+              "NOT in system/core/ or bootable/recovery/.",
+    ),
+
+    # --- ARM Trusted Firmware / ATF (1 case) ---
+    RoutingTestCase(
+        id="TC-022",
+        description="I need to add a new SMC (Secure Monitor Call) handler in the ARM Trusted Firmware BL31 to expose a platform service to the non-secure world. Where do I make this change?",
+        expected_paths=["atf/", "arm-trusted-firmware/"],
+        expected_skill="L2-trusted-firmware-atf-expert",
+        notes="SMC handlers are implemented in ATF BL31 (EL3 Secure Monitor). "
+              "This is NOT a kernel or init task — route to L2-trusted-firmware-atf-expert.",
+    ),
 ]
 
 
