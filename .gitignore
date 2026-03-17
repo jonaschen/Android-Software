@@ -52,3 +52,4 @@ vendor/
 !scripts/
 !references/
 !Storage_checking_report.md
+fake_hardware/
