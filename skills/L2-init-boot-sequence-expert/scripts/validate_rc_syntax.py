@@ -46,7 +46,6 @@ class Issue:
 
 def validate_rc(path: Path) -> list[Issue]:
     issues = []
-    lines = path.read_text(errors="replace").splitlines()
 
     in_service = False
     service_name = ""
@@ -73,72 +72,74 @@ def validate_rc(path: Path) -> list[Issue]:
                 f"service '{service_name}' is both 'critical' and 'disabled' — critical has no effect when disabled"))
         in_service = False
 
-    for lineno, raw_line in enumerate(lines, start=1):
-        line = raw_line.strip()
+    lineno = 0
+    with path.open(errors="replace") as f:
+        for lineno, raw_line in enumerate(f, start=1):
+            line = raw_line.strip()
 
-        # Skip comments and blank lines
-        if not line or line.startswith("#"):
-            continue
+            # Skip comments and blank lines
+            if not line or line.startswith("#"):
+                continue
 
-        # Service block start
-        m = re.match(r'^service\s+(\S+)\s+', line)
-        if m:
-            flush_service(lineno)
-            in_service = True
-            service_name = m.group(1)
-            service_start_line = lineno
-            service_has_user = False
-            service_has_seclabel = False
-            service_has_critical = False
-            service_has_disabled = False
-            continue
+            # Service block start
+            m = re.match(r'^service\s+(\S+)\s+', line)
+            if m:
+                flush_service(lineno)
+                in_service = True
+                service_name = m.group(1)
+                service_start_line = lineno
+                service_has_user = False
+                service_has_seclabel = False
+                service_has_critical = False
+                service_has_disabled = False
+                continue
 
-        # Action block start
-        m = re.match(r'^on\s+(.+)', line)
-        if m:
-            flush_service(lineno)
-            trigger = m.group(1).strip()
-            current_trigger = trigger
-            # Check trigger validity (prefix match for property: triggers)
-            base_trigger = trigger.split("=")[0].rstrip()
-            if base_trigger not in VALID_TRIGGERS and not base_trigger.startswith("property:"):
-                issues.append(Issue("WARNING", str(path), lineno,
-                    f"unknown trigger '{trigger}' — verify against init documentation"))
-            continue
+            # Action block start
+            m = re.match(r'^on\s+(.+)', line)
+            if m:
+                flush_service(lineno)
+                trigger = m.group(1).strip()
+                current_trigger = trigger
+                # Check trigger validity (prefix match for property: triggers)
+                base_trigger = trigger.split("=")[0].rstrip()
+                if base_trigger not in VALID_TRIGGERS and not base_trigger.startswith("property:"):
+                    issues.append(Issue("WARNING", str(path), lineno,
+                        f"unknown trigger '{trigger}' — verify against init documentation"))
+                continue
 
-        # Inside a service block
-        if in_service:
-            if re.match(r'^\s*user\s+', line):
-                service_has_user = True
-                if "root" in line:
-                    issues.append(Issue("INFO", str(path), lineno,
-                        f"service '{service_name}' runs as root — verify this is intentional"))
-            elif re.match(r'^\s*seclabel\s+', line):
-                service_has_seclabel = True
-                if "u:r:init:s0" in line:
-                    issues.append(Issue("ERROR", str(path), lineno,
-                        f"service '{service_name}' uses init's seclabel — must have its own SELinux domain"))
-            elif re.match(r'^\s*critical\b', line):
-                service_has_critical = True
-            elif re.match(r'^\s*disabled\b', line):
-                service_has_disabled = True
-            elif re.match(r'^\s*socket\s+', line):
-                parts = line.split()
-                # socket <name> <type> <perm> [user [group]]
-                if len(parts) < 4:
-                    issues.append(Issue("ERROR", str(path), lineno,
-                        f"socket declaration missing permission field: '{line}'"))
-            continue
+            # Inside a service block
+            if in_service:
+                if re.match(r'^\s*user\s+', line):
+                    service_has_user = True
+                    if "root" in line:
+                        issues.append(Issue("INFO", str(path), lineno,
+                            f"service '{service_name}' runs as root — verify this is intentional"))
+                elif re.match(r'^\s*seclabel\s+', line):
+                    service_has_seclabel = True
+                    if "u:r:init:s0" in line:
+                        issues.append(Issue("ERROR", str(path), lineno,
+                            f"service '{service_name}' uses init's seclabel — must have its own SELinux domain"))
+                elif re.match(r'^\s*critical\b', line):
+                    service_has_critical = True
+                elif re.match(r'^\s*disabled\b', line):
+                    service_has_disabled = True
+                elif re.match(r'^\s*socket\s+', line):
+                    parts = line.split()
+                    # socket <name> <type> <perm> [user [group]]
+                    if len(parts) < 4:
+                        issues.append(Issue("ERROR", str(path), lineno,
+                            f"socket declaration missing permission field: '{line}'"))
+                continue
 
-        # Inside an action block — check commands
-        if current_trigger:
-            # persist.* setprop in early trigger
-            if re.match(r'^\s*setprop\s+persist\.', line):
-                if current_trigger in EARLY_TRIGGERS:
-                    issues.append(Issue("ERROR", str(path), lineno,
-                        f"'setprop persist.*' in '{current_trigger}' — /data not mounted yet; persist props will not survive reboot"))
+            # Inside an action block — check commands
+            if current_trigger:
+                # persist.* setprop in early trigger
+                if re.match(r'^\s*setprop\s+persist\.', line):
+                    if current_trigger in EARLY_TRIGGERS:
+                        issues.append(Issue("ERROR", str(path), lineno,
+                            f"'setprop persist.*' in '{current_trigger}' — /data not mounted yet; persist props will not survive reboot"))
 
-    flush_service(len(lines))
+    flush_service(lineno)
     return issues
 
 
