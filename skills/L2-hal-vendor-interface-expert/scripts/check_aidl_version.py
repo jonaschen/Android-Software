@@ -22,6 +22,15 @@ import re
 import json
 from pathlib import Path
 
+# Pre-compiled regular expressions for performance
+AIDL_INTERFACE_PATTERN = re.compile(r'aidl_interface\s*\{([^}]*(?:\{[^}]*\}[^}]*)*)\}', re.DOTALL)
+NAME_PATTERN = re.compile(r'name\s*:\s*"([^"]+)"')
+STABILITY_PATTERN = re.compile(r'stability\s*:\s*"([^"]+)"')
+FROZEN_PATTERN = re.compile(r'frozen\s*:\s*(true|false)')
+VERSION_PATTERN = re.compile(r'version\s*:\s*"(\d+)"')
+VERSIONS_ARRAY_PATTERN = re.compile(r'versions\s*:\s*\[([^\]]*)\]')
+VERSION_ITEMS_PATTERN = re.compile(r'"(\d+)"')
+
 
 def find_bp_files(search_path: str) -> list[Path]:
     return list(Path(search_path).rglob("Android.bp"))
@@ -36,30 +45,27 @@ def parse_aidl_interfaces(bp_path: Path) -> list[dict]:
     interfaces = []
 
     # Find all aidl_interface { ... } blocks (non-nested, best-effort)
-    pattern = re.compile(r'aidl_interface\s*\{([^}]*(?:\{[^}]*\}[^}]*)*)\}', re.DOTALL)
-    for match in pattern.finditer(text):
+    for match in AIDL_INTERFACE_PATTERN.finditer(text):
         block = match.group(1)
 
-        def extract(field: str, default="<unknown>") -> str:
-            m = re.search(rf'{field}\s*:\s*"([^"]+)"', block)
-            return m.group(1) if m else default
+        m_name = NAME_PATTERN.search(block)
+        name = m_name.group(1) if m_name else "<unknown>"
 
-        def extract_bool(field: str) -> bool | None:
-            m = re.search(rf'{field}\s*:\s*(true|false)', block)
-            if m:
-                return m.group(1) == "true"
-            return None
+        m_stability = STABILITY_PATTERN.search(block)
+        stability = m_stability.group(1) if m_stability else "local"
 
-        name = extract("name")
-        stability = extract("stability", default="local")
-        frozen = extract_bool("frozen")
+        m_frozen = FROZEN_PATTERN.search(block)
+        if m_frozen:
+            frozen = m_frozen.group(1) == "true"
+        else:
+            frozen = None
 
         # Extract version numbers from versions_with_info or versions
-        versions = re.findall(r'version\s*:\s*"(\d+)"', block)
+        versions = VERSION_PATTERN.findall(block)
         if not versions:
-            versions = re.findall(r'versions\s*:\s*\[([^\]]*)\]', block)
-            if versions:
-                versions = re.findall(r'"(\d+)"', versions[0])
+            versions_array = VERSIONS_ARRAY_PATTERN.findall(block)
+            if versions_array:
+                versions = VERSION_ITEMS_PATTERN.findall(versions_array[0])
 
         latest_version = max((int(v) for v in versions), default=None) if versions else None
 
