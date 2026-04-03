@@ -53,6 +53,7 @@ This repository implements a **Hierarchical AI Agent Skill Set** based on an **M
 - **Check API compatibility:** `python3 skills/L2-version-migration-expert/scripts/check_api_compatibility.py <before.txt> <after.txt>`
 - **Validate dirty pages schema:** `python3 scripts/validate_dirty_pages.py`
 - **Check pKVM / AVF status:** `bash skills/L2-virtualization-pkvm-expert/scripts/check_pkvm_status.sh`
+- **Detect Dirty Pages:** `git diff --name-only A..B | python3 scripts/detect_dirty_pages.py [--reason <reason>] [--apply] [--json]`
 - **Skill Linting:** `scripts/skill_lint.py` (planned — Phase 4)
 
 ## 🚀 Key Directories

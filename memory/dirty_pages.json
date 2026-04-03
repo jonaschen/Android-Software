@@ -1,8 +1,9 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-03-15",
+  "_last_updated": "2026-04-04",
   "_android_version_baseline": "Android 14.0.0_r1",
+  "_research_note": "2026-04-04 steward session: A16 changes identified — GKI 6.12 KMI, AVF/pKVM expansions, AIDL/HIDL gap, biannual AOSP drops. See HS-023..HS-026.",
 
   "skills": {
     "L1-aosp-root-router": {
@@ -27,11 +28,12 @@
       "affected_paths": []
     },
     "L2-hal-vendor-interface-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "hal_interface_version_bump",
+      "affected_paths": ["hardware/interfaces/"],
+      "_steward_note": "AIDL mandatory for new HALs; Audio CAP gap blocks HIDL→AIDL migration for some OEMs. genfscon label optionality for vendor API 202504+. See HS-025."
     },
     "L2-framework-services-expert": {
       "status": "not_yet_deployed",
@@ -48,18 +50,20 @@
       "affected_paths": []
     },
     "L2-version-migration-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "android_version_bump",
+      "affected_paths": [],
+      "_steward_note": "AOSP drops now biannual (Q2/Q4 2026). android-latest-release replaces aosp-main. 16KB page mandatory for Play apps targeting A15+. See HS-026."
     },
     "L2-multimedia-audio-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "hal_interface_version_bump",
+      "affected_paths": ["frameworks/av/", "hardware/interfaces/audio/"],
+      "_steward_note": "Audio AIDL HAL: CAP not ported in A14/A15; blocks OEM migration. Audio policy config moved from XML to AIDL HAL. See HS-025."
     },
     "L2-connectivity-network-expert": {
       "status": "not_yet_deployed",
@@ -69,11 +73,12 @@
       "affected_paths": []
     },
     "L2-kernel-gki-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "android_version_bump",
+      "affected_paths": ["kernel/", "drivers/"],
+      "_steward_note": "A16 ships GKI android16-6.12 (Linux 6.12 LTS). New KMI baseline; 16KB page-size GKI builds available. See HS-023."
     },
     "L2-bootloader-lk-expert": {
       "status": "not_yet_deployed",
@@ -84,22 +89,24 @@
       "_note": "Paths (bootloader/lk/, atf/) are vendor/SoC-supplied, not in standard AOSP."
     },
     "L2-trusted-firmware-atf-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "api_surface_changed",
       "affected_paths": [],
-      "_note": "Paths (atf/, trusty/) are vendor/SoC-supplied, not in standard AOSP."
+      "_note": "Paths (atf/, trusty/) are vendor/SoC-supplied, not in standard AOSP.",
+      "_steward_note": "A16 pKVM guest firmware uses FF-A for TrustZone communication in protected VMs. ATF skill must document FF-A path. See HS-024."
     },
     "L2-virtualization-pkvm-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
+      "status": "dirty",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "android_version_bump",
       "affected_paths": [
         "packages/modules/Virtualization/",
         "external/crosvm/"
-      ]
+      ],
+      "_steward_note": "A16: AVF LL-NDK vendor VMs, early-boot VMs, Microdroid 16K pVM, FF-A guest firmware. See HS-024."
     }
   },
 
