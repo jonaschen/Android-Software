@@ -22,7 +22,7 @@
 | Git history | Active | Phase 1, 2 & 3 deliverables staged |
 
 ### Current Phase
-**Phase 4 — In Progress** (4.1 complete, 4.2–4.5 remaining)
+**Phase 4 — In Progress** (4.1–4.2 complete, 4.3–4.5 remaining)
 
 Phase 3 — Complete ✅
 
@@ -175,7 +175,7 @@ Each L2 skill must include:
 | # | Task | Output | Status |
 |---|------|--------|--------|
 | 4.1 | Git-diff driven dirty page detection | `scripts/detect_dirty_pages.py` — scans git diff output against `path_scope` fields | ✅ Done |
-| 4.2 | Automated migration impact report | `scripts/migration_impact.py` — generates per-skill refresh checklist for version bump | |
+| 4.2 | Automated migration impact report | `scripts/migration_impact.py` — generates per-skill refresh checklist for version bump | ✅ Done |
 | 4.3 | Layer 3 extension framework | Template + guide for adding OEM skills (`qualcomm-soc-expert`, `mediatek-soc-expert`) | |
 | 4.4 | SKILL.md version linting | `scripts/skill_lint.py` — validates all SKILL.md files against the template schema | |
 | 4.5 | Android A15 validation pass | Update `android_version_tested` field across all skills; document deltas | |
