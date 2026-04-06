@@ -1,9 +1,9 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-04-06",
+  "_last_updated": "2026-04-07",
   "_android_version_baseline": "Android 14.0.0_r1",
-  "_research_note": "2026-04-04 steward session: A16 changes identified — GKI 6.12 KMI, AVF/pKVM expansions, AIDL/HIDL gap, biannual AOSP drops. See HS-023..HS-026.",
+  "_research_note": "2026-04-07 steward research: SELinux IOCTL hardening (HS-027), 16KB mandatory May 2026 (HS-028), DHCPv6 PD + IPv6 local perm (HS-029), genrule sandboxing + Py2 removal (HS-030). Prior: HS-023..HS-026.",
 
   "skills": {
     "L1-aosp-root-router": {
@@ -14,18 +14,20 @@
       "affected_paths": []
     },
     "L2-build-system-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "api_surface_changed",
+      "affected_paths": ["build/"],
+      "_steward_note": "Genrules now sandboxed (RBE/Bazel compat), Python 2 fully removed, partition images only include clean-build contents. See HS-030."
     },
     "L2-security-selinux-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "api_surface_changed",
+      "affected_paths": ["system/sepolicy/"],
+      "_steward_note": "A16 QPR2 adds SELinux macro for IOCTL hardening on kernel drivers. Zero-trust enforcement at driver interface. See HS-027."
     },
     "L2-hal-vendor-interface-expert": {
       "status": "dirty",
@@ -66,11 +68,12 @@
       "_steward_note": "Audio AIDL HAL: CAP not ported in A14/A15; blocks OEM migration. Audio policy config moved from XML to AIDL HAL. See HS-025."
     },
     "L2-connectivity-network-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
-      "dirty_reason": null,
-      "affected_paths": []
+      "status": "dirty",
+      "android_version_tested": "Android 14",
+      "last_validated": "2026-03-15",
+      "dirty_reason": "api_surface_changed",
+      "affected_paths": ["packages/modules/Connectivity/", "system/netd/"],
+      "_steward_note": "A16: DHCPv6 Prefix Delegation for tethering, IPv6 local network runtime permission, Adaptive Connectivity split in QPR3. See HS-029."
     },
     "L2-kernel-gki-expert": {
       "status": "dirty",
