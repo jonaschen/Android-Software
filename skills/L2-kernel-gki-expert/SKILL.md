@@ -3,7 +3,7 @@ name: kernel-gki-expert
 layer: L2
 path_scope: kernel/, drivers/, common/
 version: 1.0.0
-android_version_tested: Android 14 (GKI 6.1 / 6.6)
+android_version_tested: Android 15 (GKI 6.6)
 parent_skill: aosp-root-router
 ---
 
@@ -189,6 +189,15 @@ ioctl interface:
 RULE: All userspace-visible interfaces (sysfs, ioctl, /dev nodes) must be
 stable. Changing them breaks binary compatibility with userspace blobs.
 ```
+
+### Android 15 GKI / Kernel Changes
+
+| Change | Impact |
+|--------|--------|
+| GKI android15-6.6 (Linux 6.6 LTS) | New kernel baseline; one GKI per release (no android15-6.1) |
+| KMI break from A14 | android14-6.1 KMI not compatible with android15-6.6; full module rebuild required |
+| 16KB page size GKI builds | Available as on-demand builds alongside 4KB default |
+| android14-6.1 forward-compatible | Can still run on A15 devices, but cannot swap kernel without module rebuild |
 
 ---
 

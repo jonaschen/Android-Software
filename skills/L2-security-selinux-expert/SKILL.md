@@ -3,7 +3,7 @@ name: security-selinux-expert
 layer: L2
 path_scope: system/sepolicy/, vendor/*/sepolicy/, device/*/sepolicy/, *.te, file_contexts, property_contexts, service_contexts
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -122,6 +122,15 @@ Key fields:
 vendor.myapp.                       u:object_r:vendor_myapp_prop:s0
 ro.myapp.version                    u:object_r:vendor_myapp_prop:s0
 ```
+
+### Android 15 SELinux / Security Changes
+
+| Change | Impact |
+|--------|--------|
+| Signature permission allowlist | Platform enforces explicit allowlist for signature perms requested by non-system apps; new apps requesting signature perms must be listed |
+| Private space isolation | New SELinux domain boundaries for the Private Space feature (secure area hiding sensitive apps) |
+| FBE `dusize_4k` flag | New file-based encryption config option forcing 4096-byte data units |
+| Mobile network transparency | New privacy settings notify users of unencrypted connections and IMSI/IMEI exposure |
 
 ---
 

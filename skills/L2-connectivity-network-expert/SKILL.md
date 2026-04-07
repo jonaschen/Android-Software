@@ -3,7 +3,7 @@ name: connectivity-network-expert
 layer: L2
 path_scope: packages/modules/Connectivity/, system/netd/, system/bt/, packages/modules/Wifi/, hardware/interfaces/wifi/, hardware/interfaces/bluetooth/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -142,6 +142,15 @@ Bluetooth HAL (hardware/interfaces/bluetooth/)
       ▼
 Kernel HCI driver (/dev/ttyHS*, /dev/btusb*)
 ```
+
+### Android 15 Connectivity Changes
+
+| Change | Impact |
+|--------|--------|
+| Android Packet Filter v6 (APF v6) | Adds counters for debugging and packet transmission support in netd |
+| 802.11az Wi-Fi RTT | IEEE 802.11az protocol support for Wi-Fi ranging |
+| NFC: proprietary NCI commands | New Android Proprietary NCI Commands interface |
+| Watch companion profile update | `POST_NOTIFICATIONS` permission added to watch device profile |
 
 ---
 

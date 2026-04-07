@@ -3,7 +3,7 @@ name: build-system-expert
 layer: L2
 path_scope: build/, Android.bp, Android.mk, *.bp, *.mk, prebuilts/, toolchain/, bionic/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -103,6 +103,20 @@ User runs: m <target>
 - `vendor.img` ← modules with `vendor: true` or `soc_specific: true`.
 - `product.img` ← modules with `product_specific: true`.
 - `odm.img` ← modules with `device_specific: true`.
+
+### Android 15 Build System Changes
+
+| Change | Impact |
+|--------|--------|
+| Sandboxed genrules | Genrules can only access listed `srcs`; builds relying on implicit inputs break |
+| Python 2 fully removed | All build scripts must use Python 3 |
+| Sysprop library reference change | Direct `cc_module` deps on `sysprop_library` disallowed; use generated `libfoo` |
+| `depfile` property removed from gensrcs | Use explicit deps or `tool_files` instead |
+| Directory inputs banned in genrules | Must specify individual files |
+| Module name character validation | Only `a-z A-Z 0-9 _.+-=,@~` allowed |
+| System property duplication error | Multiple assignments for same property per partition now fail |
+| Dexpreopt uses-library checks | Java modules must declare `uses_libs` / `optional_uses_libs` |
+| Soong plugin validation | New plugins restricted to vendor/hardware directories |
 
 ---
 

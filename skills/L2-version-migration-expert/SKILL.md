@@ -3,7 +3,7 @@ name: version-migration-expert
 layer: L2
 path_scope: cross-cutting (diff analysis across all paths)
 version: 1.0.0
-android_version_tested: Android 14 → Android 15
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 

@@ -9,7 +9,7 @@
 
 ## Project Status Summary
 
-> **As of:** 2026-04-07
+> **As of:** 2026-04-08
 
 | Area | Status | Notes |
 |------|--------|-------|
@@ -18,11 +18,11 @@
 | `memory/` directory | ✅ Phase 3 complete | 22 hindsight notes, `cross_skill_triggers.md` (12 patterns), `dirty_pages.json` validated |
 | `tests/` directory | ✅ Phase 3 complete | `test_router.py` with 100 routing cases (30 multi-skill cross-domain) |
 | `references/` directory | ✅ Phase 2 complete | `aosp_top_level_paths.md` v1.2 (49 path entries) |
-| `scripts/` directory | ✅ Phase 3 complete | `validate_dirty_pages.py` — schema validator (0 errors) |
+| `scripts/` directory | ✅ Phase 4 complete | `validate_dirty_pages.py`, `detect_dirty_pages.py`, `migration_impact.py`, `skill_lint.py` |
 | Git history | Active | Phase 1, 2 & 3 deliverables staged |
 
 ### Current Phase
-**Phase 4 — In Progress** (4.1–4.4 complete, 4.5 remaining)
+**Phase 4 — Complete** ✅ (all deliverables 4.1–4.5 done)
 
 Phase 3 — Complete ✅
 
@@ -178,7 +178,7 @@ Each L2 skill must include:
 | 4.2 | Automated migration impact report | `scripts/migration_impact.py` — generates per-skill refresh checklist for version bump | ✅ Done |
 | 4.3 | Layer 3 extension framework | Template + guide for adding OEM skills (`qualcomm-soc-expert`, `mediatek-soc-expert`) | ✅ Done |
 | 4.4 | SKILL.md version linting | `scripts/skill_lint.py` — validates all SKILL.md files against the template schema | ✅ Done |
-| 4.5 | Android A15 validation pass | Update `android_version_tested` field across all skills; document deltas | |
+| 4.5 | Android A15 validation pass | Update `android_version_tested` field across all skills; document deltas | ✅ Done |
 
 ### Gate Criterion
 - `detect_dirty_pages.py` correctly identifies affected skills for a synthetic A14→A15 diff.
@@ -195,7 +195,7 @@ Each L2 skill must include:
 | M2: Core Skills Ready | End of Phase 2 Tier 1 | Build + Security + HAL skills deployed | ✅ 2026-03-15 |
 | M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 12 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
 | M4: Collaborative Agent | End of Phase 3 | 100-case suite, 22 hindsight notes, 12 cross-skill patterns, validator | ✅ 2026-03-15 |
-| M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility | — |
+| M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility, A15 validated | ✅ 2026-04-08 |
 
 ---
 

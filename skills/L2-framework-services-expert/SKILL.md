@@ -3,7 +3,7 @@ name: framework-services-expert
 layer: L2
 path_scope: frameworks/base/, frameworks/native/, libcore/, libnativehelper/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -136,6 +136,16 @@ Enforce in: service code via:
   or annotation:
   @EnforcePermission(Manifest.permission.MY_PERM)
 ```
+
+### Android 15 Framework Changes
+
+| Change | Impact |
+|--------|--------|
+| Foreground service restrictions | `BOOT_COMPLETED` receivers cannot launch certain FGS types; throws `ForegroundServiceStartNotAllowedException` |
+| New `mediaProcessing` FGS type | Foreground service type for transcoding and media processing |
+| Minimum targetSdkVersion 24 | Apps below API 24 blocked from installation |
+| Compiler filter override API | `setAdjustCompilerFilterCallback` for per-package compiler customization |
+| Soft restart deprecated | Runtime restart via `SoftRestart` mechanism removed |
 
 ---
 

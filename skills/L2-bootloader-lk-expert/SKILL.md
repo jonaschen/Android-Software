@@ -3,7 +3,7 @@ name: bootloader-lk-expert
 layer: L2
 path_scope: bootloader/lk/, bootable/bootloader/, device/<OEM>/<product>/bootloader/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -165,6 +165,15 @@ LK calls libavb to verify boot.img:
     ORANGE → verification disabled (unlocked bootloader)
     RED    → verification failed; boot aborted (locked device)
 ```
+
+### Android 15 Bootloader-Relevant Changes
+
+| Change | Impact |
+|--------|--------|
+| 16KB page size boot | Bootloader must read page size from kernel image header to select correct DTB/kernel config |
+| `ro.boot.hardware.cpu.pagesize` | OEM-specific property for signaling page size to userspace |
+| Virtual A/B v3 | New OTA update mechanism; boot slot selection logic updated |
+| Dual kernel OTA | Two boot images (4K + 16K) for page size toggle support |
 
 ---
 

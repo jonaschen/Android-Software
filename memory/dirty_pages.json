@@ -1,120 +1,118 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-04-07",
-  "_android_version_baseline": "Android 14.0.0_r1",
-  "_research_note": "2026-04-07 steward research: SELinux IOCTL hardening (HS-027), 16KB mandatory May 2026 (HS-028), DHCPv6 PD + IPv6 local perm (HS-029), genrule sandboxing + Py2 removal (HS-030). Prior: HS-023..HS-026.",
+  "_last_updated": "2026-04-08",
+  "_android_version_baseline": "Android 15",
+  "_research_note": "2026-04-08 Phase 4.5: A15 validation pass complete. All skills updated from A14 to A15 baseline. Prior A16 research notes (HS-023..HS-030) remain valid for future A16 pass.",
 
   "skills": {
     "L1-aosp-root-router": {
       "status": "clean",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
       "dirty_reason": null,
       "affected_paths": []
     },
     "L2-build-system-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "api_surface_changed",
-      "affected_paths": ["build/"],
-      "_steward_note": "Genrules now sandboxed (RBE/Bazel compat), Python 2 fully removed, partition images only include clean-build contents. See HS-030."
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: sandboxed genrules, Python 2 removed, sysprop ref change, depfile removal, module name validation. See HS-031."
     },
     "L2-security-selinux-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "api_surface_changed",
-      "affected_paths": ["system/sepolicy/"],
-      "_steward_note": "A16 QPR2 adds SELinux macro for IOCTL hardening on kernel drivers. Zero-trust enforcement at driver interface. See HS-027."
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: signature permission allowlist, private space SELinux domains, FBE dusize_4k. See HS-031."
     },
     "L2-hal-vendor-interface-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "hal_interface_version_bump",
-      "affected_paths": ["hardware/interfaces/"],
-      "_steward_note": "AIDL mandatory for new HALs; Audio CAP gap blocks HIDL→AIDL migration for some OEMs. genfscon label optionality for vendor API 202504+. See HS-025."
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: VNDK deprecated, AIDL mandatory for new HALs, Health HAL 3.0, Thermal HAL 2.0. See HS-031."
     },
     "L2-framework-services-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
       "dirty_reason": null,
-      "affected_paths": []
+      "affected_paths": [],
+      "_steward_note": "A15: FGS restrictions from BOOT_COMPLETED, mediaProcessing FGS type, soft restart deprecated. See HS-032."
     },
     "L2-init-boot-sequence-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
       "dirty_reason": null,
-      "affected_paths": []
+      "affected_paths": [],
+      "_steward_note": "A15: Virtual A/B v3, 16KB page size boot, soft restart deprecated. See HS-032."
     },
     "L2-version-migration-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": [],
-      "_steward_note": "AOSP drops now biannual (Q2/Q4 2026). android-latest-release replaces aosp-main. 16KB page mandatory for Play apps targeting A15+. See HS-026."
-    },
-    "L2-multimedia-audio-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "hal_interface_version_bump",
-      "affected_paths": ["frameworks/av/", "hardware/interfaces/audio/"],
-      "_steward_note": "Audio AIDL HAL: CAP not ported in A14/A15; blocks OEM migration. Audio policy config moved from XML to AIDL HAL. See HS-025."
-    },
-    "L2-connectivity-network-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "api_surface_changed",
-      "affected_paths": ["packages/modules/Connectivity/", "system/netd/"],
-      "_steward_note": "A16: DHCPv6 Prefix Delegation for tethering, IPv6 local network runtime permission, Adaptive Connectivity split in QPR3. See HS-029."
-    },
-    "L2-kernel-gki-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": ["kernel/", "drivers/"],
-      "_steward_note": "A16 ships GKI android16-6.12 (Linux 6.12 LTS). New KMI baseline; 16KB page-size GKI builds available. See HS-023."
-    },
-    "L2-bootloader-lk-expert": {
-      "status": "not_yet_deployed",
-      "android_version_tested": null,
-      "last_validated": null,
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
       "dirty_reason": null,
       "affected_paths": [],
-      "_note": "Paths (bootloader/lk/, atf/) are vendor/SoC-supplied, not in standard AOSP."
+      "_steward_note": "A15: baseline updated; migration table verified. 16KB mandatory deadline May 2026."
+    },
+    "L2-multimedia-audio-expert": {
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: Low Light Boost, camera feature combo API, head tracking LE Audio, RoI encoding, AIDL CAP gap. See HS-032."
+    },
+    "L2-connectivity-network-expert": {
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: APF v6, 802.11az Wi-Fi RTT, proprietary NCI commands. See HS-032."
+    },
+    "L2-kernel-gki-expert": {
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: GKI android15-6.6 (Linux 6.6 LTS), KMI break from A14, 16KB page GKI builds. See HS-031."
+    },
+    "L2-bootloader-lk-expert": {
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A15: 16KB page size boot, ro.boot.hardware.cpu.pagesize, Virtual A/B v3. See HS-032."
     },
     "L2-trusted-firmware-atf-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 14",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "api_surface_changed",
+      "status": "clean",
+      "android_version_tested": "Android 15",
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
       "affected_paths": [],
-      "_note": "Paths (atf/, trusty/) are vendor/SoC-supplied, not in standard AOSP.",
-      "_steward_note": "A16 pKVM guest firmware uses FF-A for TrustZone communication in protected VMs. ATF skill must document FF-A path. See HS-024."
+      "_steward_note": "A15: AVF device assignment (experimental), no direct ATF AOSP API changes."
     },
     "L2-virtualization-pkvm-expert": {
-      "status": "dirty",
+      "status": "clean",
       "android_version_tested": "Android 15",
-      "last_validated": "2026-03-15",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": [
-        "packages/modules/Virtualization/",
-        "external/crosvm/"
-      ],
-      "_steward_note": "A16: AVF LL-NDK vendor VMs, early-boot VMs, Microdroid 16K pVM, FF-A guest firmware. See HS-024."
+      "last_validated": "2026-04-08",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "Already validated at A15. Updatable VMs, remote attestation, device assignment (experimental)."
     },
     "L3-TEMPLATE": {
       "status": "clean",
       "android_version_tested": "Android 15",
-      "last_validated": "2026-04-06",
+      "last_validated": "2026-04-08",
       "dirty_reason": null,
       "affected_paths": [],
       "_note": "Template skill for L3 OEM/SoC extensions. Not a real skill — used as a copy source."

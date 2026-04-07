@@ -3,7 +3,7 @@ name: hal-vendor-interface-expert
 layer: L2
 path_scope: hardware/interfaces/, vendor/, system/vndk/, frameworks/native/libs/binder/, pdk/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -137,6 +137,17 @@ RULE: System code uses /dev/binder.
 | `hwservicemanager` | HIDL services (legacy) | `android.hidl.manager@1.0` |
 
 New HALs use AIDL → register with `servicemanager`.
+
+### Android 15 HAL / Vendor Interface Changes
+
+| Change | Impact |
+|--------|--------|
+| VNDK deprecated | Former VNDK libraries treated as regular vendor/product libs; `system/vndk/` path scope reduced |
+| AIDL mandatory for all new HALs | No new HIDL interfaces accepted; HIDL frozen |
+| Health HAL 3.0 | Updated health interface version |
+| Thermal HAL 2.0 | Updated thermal interface version |
+| Domain Selection Service | New system API for IMS vs circuit-switched domain selection |
+| Camera feature combination query | New platform API for querying supported camera feature combos |
 
 ---
 

@@ -3,7 +3,7 @@ name: trusted-firmware-atf-expert
 layer: L2
 path_scope: atf/, arm-trusted-firmware/, trusty/, vendor/*/trustzone/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -201,6 +201,13 @@ fiptool create \
 
 fip.bin is then flashed to the 'fip' or 'abl' partition.
 ```
+
+### Android 15 ATF-Relevant Changes
+
+| Change | Impact |
+|--------|--------|
+| AVF device assignment (experimental) | Peripheral devices can be fully assigned to protected VMs at firmware level; ATF may need new SMC handlers for device passthrough |
+| No direct ATF AOSP API changes | ATF changes for A15 are vendor-driven, not in AOSP mainline |
 
 ---
 

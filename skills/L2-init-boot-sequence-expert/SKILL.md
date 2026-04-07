@@ -3,7 +3,7 @@ name: init-boot-sequence-expert
 layer: L2
 path_scope: system/core/init/, system/core/, bootable/, *.rc
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -159,6 +159,14 @@ Socket is created by init at `/dev/socket/<name>`, owned by specified user/group
 | Product | `product/etc/init/*.rc` | After ODM |
 
 **Rule:** Never edit `init.rc` directly for vendor/OEM daemons. Place `.rc` files in `vendor/etc/init/` and they are automatically imported.
+
+### Android 15 Init / Boot Changes
+
+| Change | Impact |
+|--------|--------|
+| Virtual A/B v3 | Faster, smaller OTA updates; new update mechanism affects boot slot selection flow |
+| 16KB page size boot support | Bootloader must determine page size from kernel header; dual OTA images (4K + 16K) |
+| Soft restart deprecated | `SoftRestart` mechanism removed; full reboots required for scenarios that previously used soft restart |
 
 ---
 

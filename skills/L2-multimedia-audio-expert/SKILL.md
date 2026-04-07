@@ -3,7 +3,7 @@ name: multimedia-audio-expert
 layer: L2
 path_scope: frameworks/av/, frameworks/native/services/surfaceflinger/, hardware/interfaces/audio/, hardware/interfaces/camera/, hardware/interfaces/graphics/
 version: 1.0.0
-android_version_tested: Android 14
+android_version_tested: Android 15
 parent_skill: aosp-root-router
 ---
 
@@ -140,6 +140,16 @@ Key failure modes:
   - INFO_OUTPUT_FORMAT_CHANGED: codec renegotiated format mid-stream
   - BUFFER TIMEOUT in dequeueOutputBuffer: downstream consumer stalled
 ```
+
+### Android 15 Multimedia Changes
+
+| Change | Impact |
+|--------|--------|
+| Low Light Boost | New camera auto exposure mode for low-light preview brightness adjustment |
+| Camera feature combination query API | Platform API to query supported camera feature combinations |
+| Head tracking over LE Audio | Latency mode adjustments based on head tracking transport |
+| Region of Interest (RoI) video encoding | Standardized RoI integration for video encoding pipelines |
+| Audio AIDL HAL: CAP not ported | Configurable Audio Policy not available in AIDL HAL for A14/A15; blocks OEM migration |
 
 ---
 
