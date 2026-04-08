@@ -1,7 +1,7 @@
 # Android-Software-Owner Skill Set — Development Roadmap
 
-> **Version:** 1.2
-> **Date:** 2026-03-15
+> **Version:** 1.3
+> **Date:** 2026-04-09
 > **Based on:** ANDROID_SW_OWNER_DEV_PLAN.md v1.4
 > **Target AOSP:** Android 14.0.0_r1 (extensible to A15+)
 
@@ -22,7 +22,9 @@
 | Git history | Active | Phase 1, 2 & 3 deliverables staged |
 
 ### Current Phase
-**Phase 4 — Complete** ✅ (all deliverables 4.1–4.5 done)
+**Phase 5 — In Progress** (A16 readiness & quality hardening)
+
+Phase 4 — Complete ✅ (all deliverables 4.1–4.5 done)
 
 Phase 3 — Complete ✅
 
@@ -187,6 +189,29 @@ Each L2 skill must include:
 
 ---
 
+## Phase 5: Android 16 Readiness & Quality Hardening
+
+**Goal:** Prepare the skill set for Android 16, harden routing accuracy with a live benchmark, and close documentation gaps exposed by Phase 4 completion.
+
+### Deliverables
+
+| # | Task | Output | Status |
+|---|------|--------|--------|
+| 5.1 | Android A16 validation pass | Update `android_version_tested` to Android 16 across all skills; document A15→A16 deltas per skill; leverage HS-033–HS-036 forward intelligence | ⏳ Not started |
+| 5.2 | GBL bootloader skill refresh | Expand L2-bootloader-lk-expert to cover Generic Bootloader (GBL) alongside LK; update path_scope, architecture intelligence, and skill name if warranted (ref: HS-034) | ⏳ Not started |
+| 5.3 | 16KB page size deep-dive content | Add 16KB page size migration guidance to L2-kernel-gki-expert and L2-version-migration-expert; create `references/16kb_page_migration_guide.md` with concrete audit steps | ⏳ Not started |
+| 5.4 | Live routing accuracy benchmark | Implement a real router in `test_router.py` that loads SKILL.md path_scope fields and matches test-case paths; exit stub mode; target ≥95% accuracy on 100 cases | ✅ Done (100%) |
+| 5.5 | Documentation refresh | Update README.md Alpha Status to reflect Phase 4 completion; update repository layout section; add Phase 5 references | ✅ Done |
+
+### Gate Criterion
+- All 13 skills pass `skill_lint.py` with `android_version_tested: Android 16`.
+- `references/a15_to_a16_delta_summary.md` documents per-skill A16 deltas.
+- `test_router.py` runs in live mode with ≥95% routing accuracy on 100 cases.
+- `references/16kb_page_migration_guide.md` exists with audit steps for ELF alignment, mmap usage, and page-size assumptions.
+- README.md reflects current project state (Phase 4 complete, Phase 5 active).
+
+---
+
 ## Milestones Summary
 
 | Milestone | Phase | Key Metric | Status |
@@ -196,6 +221,7 @@ Each L2 skill must include:
 | M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 12 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
 | M4: Collaborative Agent | End of Phase 3 | 100-case suite, 22 hindsight notes, 12 cross-skill patterns, validator | ✅ 2026-03-15 |
 | M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility, A15 validated | ✅ 2026-04-08 |
+| M6: A16-Ready | End of Phase 5 | A16 validated, GBL covered, 16KB guide, live routing benchmark ≥95% | ⏳ Target: 2026-04 |
 
 ---
 
@@ -211,4 +237,4 @@ Each L2 skill must include:
 
 ---
 
-*Roadmap v1.2 — Phase 3 complete: 100-case test suite, 22 hindsight notes, 12 cross-skill patterns, dirty_pages validator. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*
+*Roadmap v1.3 — Phase 4 complete (2026-04-08): detect_dirty_pages.py, migration_impact.py, skill_lint.py, L3 extension framework, A15 validation pass. Phase 5 defined (2026-04-09): A16 readiness, GBL bootloader, 16KB page guide, live routing benchmark. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*

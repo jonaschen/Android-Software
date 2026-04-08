@@ -1,6 +1,6 @@
 # Android Software Owner — AI Agent Skill Set
 
-> **Alpha v0.1** — Field-tested by BSP engineers. Gaps expected and welcomed.
+> **Beta v0.5** — Phase 4 complete. Skills validated against Android 15 with A16 forward intelligence staged.
 > See [How to Report Gaps](#reporting-gaps-and-feedback) to help improve this.
 
 A **Hierarchical AI Agent Skill Set** for Android Software Owners and BSP engineers working with AOSP. Built on an **MMU-driven Memory Model** — the agent loads only the subsystem knowledge relevant to your current task, preventing context bloat and hallucinated paths across a 50M+ LOC codebase.
@@ -127,10 +127,20 @@ These persist across sessions and teach the agent your platform's specific behav
 When you pull a new BSP drop or update your Android version:
 
 ```bash
+# Auto-detect dirty skills from a git diff
+git diff --name-only A14..A15 | python3 scripts/detect_dirty_pages.py --apply
+
+# Generate a per-skill migration impact report
+python3 scripts/migration_impact.py --from A14 --to A15
+
+# Validate dirty_pages.json schema
 python3 scripts/validate_dirty_pages.py
+
+# Lint all SKILL.md files against the template schema
+python3 scripts/skill_lint.py
 ```
 
-Then manually set `status: "dirty"` for affected skills in `memory/dirty_pages.json`. This flags the agent to treat those skills' content as potentially stale.
+The `detect_dirty_pages.py` script reads changed file paths, matches them against each skill's `path_scope`, and updates `memory/dirty_pages.json` automatically.
 
 ---
 
@@ -159,8 +169,17 @@ Then manually set `status: "dirty"` for affected skills in `memory/dirty_pages.j
 # Run the 100-case routing accuracy test suite
 python3 tests/routing_accuracy/test_router.py
 
+# Detect dirty skills from a git diff
+git diff --name-only A14..A15 | python3 scripts/detect_dirty_pages.py --apply
+
+# Generate migration impact report
+python3 scripts/migration_impact.py --from A14 --to A15
+
 # Validate dirty_pages.json schema
 python3 scripts/validate_dirty_pages.py
+
+# Lint all SKILL.md files against the template schema
+python3 scripts/skill_lint.py
 
 # Check pKVM / AVF support on a connected device
 bash skills/L2-virtualization-pkvm-expert/scripts/check_pkvm_status.sh
@@ -177,18 +196,31 @@ python3 skills/L2-version-migration-expert/scripts/check_api_compatibility.py <b
 
 ---
 
-## Alpha Status
+## Project Status
 
-This is **Alpha v0.1**. The skill content is complete and usable today. Known limitations:
+This is **Beta v0.5** — Phase 4 is complete. All automation scripts are delivered and skills are validated against Android 15.
 
-| Limitation | Plan |
-|-----------|------|
-| No automated routing engine — the AI agent does the routing using the SKILL.md spec | Phase 4: `detect_dirty_pages.py`, routing benchmark |
-| Skills validated against Android 14; A15 delta not yet formalized | Phase 4: A15 validation pass |
-| No OEM/SoC-specific Layer 3 skills (Qualcomm, MediaTek, etc.) | Phase 4: L3 extension framework |
-| Routing accuracy formally unmeasured (stub router in test suite) | Phase 4: live router benchmark |
+| Capability | Status |
+|-----------|--------|
+| 13 skills (L1 + 12 L2) with full SKILL.md, scripts, and references | ✅ Complete |
+| Git-diff dirty page detection (`scripts/detect_dirty_pages.py`) | ✅ Complete |
+| Automated migration impact reports (`scripts/migration_impact.py`) | ✅ Complete |
+| SKILL.md schema linting (`scripts/skill_lint.py`) | ✅ Complete |
+| Layer 3 OEM/SoC extension framework (template + guide) | ✅ Complete |
+| Android 15 validation pass (all skills updated, delta summary) | ✅ Complete |
+| 36 hindsight notes (HS-001–HS-036) including A16 forward intelligence | ✅ Complete |
+| 100-case routing test suite (30 multi-skill scenarios) | ✅ Complete |
 
-See [ROADMAP.md](ROADMAP.md) for the Phase 4 plan.
+### Active Work (Phase 5)
+
+| Goal | Plan |
+|------|------|
+| Android 16 validation pass | Update all skills for A16 deltas (GBL, kernel 6.12, APV codec, build changes) |
+| GBL bootloader skill refresh | Expand bootloader skill for Generic Bootloader alongside LK |
+| 16KB page size deep-dive | Migration guide with concrete audit steps |
+| Live routing benchmark | Exit stub mode in test suite; target ≥95% accuracy |
+
+See [ROADMAP.md](ROADMAP.md) for Phase 5 details.
 
 ---
 
@@ -213,24 +245,30 @@ Android-Software/
 ├── AGENTS.md                          # Agent entry point — load this first
 ├── CLAUDE.md                          # Development standards (for contributors)
 ├── ANDROID_SW_OWNER_DEV_PLAN.md       # Architecture blueprint v1.4
-├── ROADMAP.md                         # Phase roadmap v1.2
+├── ROADMAP.md                         # Phase roadmap v1.3
 ├── skills/
 │   ├── L1-aosp-root-router/           # Intent-to-path router (40 mappings)
-│   └── L2-*/                          # 12 subsystem expert skills
-│       ├── SKILL.md                   # Knowledge, triggers, forbidden actions
-│       ├── scripts/                   # Automation tools (Bash/Python)
-│       └── references/                # Deep-dive architecture docs
+│   ├── L2-*/                          # 12 subsystem expert skills
+│   │   ├── SKILL.md                   # Knowledge, triggers, forbidden actions
+│   │   ├── scripts/                   # Automation tools (Bash/Python)
+│   │   └── references/                # Deep-dive architecture docs
+│   └── L3-TEMPLATE/                   # OEM/SoC extension template
 ├── memory/
-│   ├── hindsight_notes/               # 22 persistent insights (HS-001–HS-022)
+│   ├── hindsight_notes/               # 36 persistent insights (HS-001–HS-036)
 │   ├── cross_skill_triggers.md        # 12 multi-skill task patterns
 │   └── dirty_pages.json               # Skill freshness tracking
 ├── scripts/
-│   └── validate_dirty_pages.py        # Schema validator
+│   ├── validate_dirty_pages.py        # dirty_pages.json schema validator
+│   ├── detect_dirty_pages.py          # Git-diff dirty page detection
+│   ├── migration_impact.py            # Per-skill migration impact report
+│   └── skill_lint.py                  # SKILL.md schema linter
 ├── tests/
 │   └── routing_accuracy/
 │       └── test_router.py             # 100-case ground-truth routing spec
 └── references/
-    └── aosp_top_level_paths.md        # Canonical AOSP path → skill map
+    ├── aosp_top_level_paths.md        # Canonical AOSP path → skill map
+    ├── a14_to_a15_delta_summary.md    # A14→A15 per-skill impact summary
+    └── l3_extension_guide.md          # Guide for adding OEM/SoC L3 skills
 ```
 
 ---
@@ -247,4 +285,4 @@ Android-Software/
 
 ---
 
-*Alpha v0.1 — Phase 3 complete. Built for Android SW Owners and BSP engineers.*
+*Beta v0.5 — Phase 4 complete (2026-04-08). Phase 5 active: A16 readiness & quality hardening. Built for Android SW Owners and BSP engineers.*
