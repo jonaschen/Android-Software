@@ -20,14 +20,30 @@ Key implications:
 4. The L2-bootloader-lk-expert skill will need a major refresh to cover GBL
    alongside or instead of LK-specific knowledge.
 
+## GBL Technical Details (updated 2026-04-10)
+
+- **AOSP source path**: `bootable/libbootloader` (confirmed in public AOSP).
+  Build branch: `uefi-gbl-mainline`. Build system: Bazel.
+  Build command: `tools/bazel run //bootable/libbootloader:gbl_efi_dist`
+- **Partition layout**: Two FAT partitions `android_esp_a` / `android_esp_b`
+  (≥8 MB each, EFI System Partition GUID). GBL binary at `/EFI/BOOT/BOOTAA64.EFI`.
+- **Required UEFI protocols**: `EFI_BLOCK_IO_PROTOCOL`, `EFI_RNG_PROTOCOL`,
+  `GBL_EFI_AVB_PROTOCOL`, `GBL_EFI_BOOT_CONTROL_PROTOCOL`, `GBL_EFI_AVF_PROTOCOL`.
+- **Firmware API level**: `gbl_fw_api_level` UEFI variable must match `ro.board.api_level`.
+- **Compatibility**: Reference implementations exist for EDK2, U-Boot, and LK with UEFI.
+- **ARM64 recommendation**: "Beginning with Android 16, if you ship a device based
+  on ARM-64 chipset, we strongly recommend that you deploy the latest
+  Google-certified version of GBL."
+
 ## Lesson
 
 The bootloader skill currently focuses on LK (Little Kernel) and vendor-specific
 bootloader paths (`bootloader/lk/`, `bootable/bootloader/`). With GBL:
-- A new AOSP path for GBL sources may appear (TBD — not yet in public AOSP tree).
-- The skill's path_scope will need expansion to cover GBL.
-- Fastboot protocol interactions may change if GBL introduces new commands.
-- A/B slot management may be simplified under GBL.
+- **Confirmed**: GBL source lives at `bootable/libbootloader` in AOSP.
+- The skill's path_scope must expand to cover `bootable/libbootloader/`.
+- Fastboot protocol is a core GBL component (not a separate binary).
+- A/B slot management is handled via `GBL_EFI_BOOT_CONTROL_PROTOCOL`.
+- AVF integration via `GBL_EFI_AVF_PROTOCOL` links GBL to pKVM early boot VMs.
 
 ## Cross-Skill Impact
 

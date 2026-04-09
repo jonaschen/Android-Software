@@ -1,9 +1,9 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-04-09",
+  "_last_updated": "2026-04-10",
   "_android_version_baseline": "Android 15",
-  "_research_note": "2026-04-09: A16 forward intelligence updated (HS-037..HS-039). Four skills flagged dirty for A16 delta content. A15 baseline remains current. Prior notes HS-023..HS-036 also valid.",
+  "_research_note": "2026-04-10: GBL source path confirmed (bootable/libbootloader), Qualcomm GBL exploit disclosed (HS-040), AIDL CAP interface named (HS-041). Six skills now dirty for A16. A15 baseline remains current. Prior notes HS-023..HS-039 also valid.",
 
   "skills": {
     "L1-aosp-root-router": {
@@ -62,12 +62,12 @@
       "_steward_note": "A15: baseline updated; migration table verified. 16KB mandatory deadline May 2026."
     },
     "L2-multimedia-audio-expert": {
-      "status": "clean",
+      "status": "dirty",
       "android_version_tested": "Android 15",
       "last_validated": "2026-04-08",
-      "dirty_reason": null,
-      "affected_paths": [],
-      "_steward_note": "A15: Low Light Boost, camera feature combo API, head tracking LE Audio, RoI encoding, AIDL CAP gap. See HS-032."
+      "dirty_reason": "api_surface_changed",
+      "affected_paths": ["hardware/interfaces/audio/aidl/", "frameworks/av/"],
+      "_steward_note": "A16 delta: AudioHalCapConfiguration.aidl closes CAP gap, APV codec, AV1 transition, HDR enhancements. See HS-035, HS-041."
     },
     "L2-connectivity-network-expert": {
       "status": "dirty",
@@ -78,20 +78,20 @@
       "_steward_note": "A16 delta: unified ranging module, AIS Bluetooth GATT, IMS API expansion, SoftAp disconnect callback. See HS-039."
     },
     "L2-kernel-gki-expert": {
-      "status": "clean",
+      "status": "dirty",
       "android_version_tested": "Android 15",
       "last_validated": "2026-04-08",
-      "dirty_reason": null,
-      "affected_paths": [],
-      "_steward_note": "A15: GKI android15-6.6 (Linux 6.6 LTS), KMI break from A14, 16KB page GKI builds. See HS-031."
+      "dirty_reason": "android_version_bump",
+      "affected_paths": ["kernel/"],
+      "_steward_note": "A16 delta: GKI android16-6.12 (Linux 6.12 LTS, latest 6.12.69), KMI break from android15-6.6, 16KB page GKI on-demand builds. See HS-023, HS-033."
     },
     "L2-bootloader-lk-expert": {
-      "status": "clean",
+      "status": "dirty",
       "android_version_tested": "Android 15",
       "last_validated": "2026-04-08",
-      "dirty_reason": null,
-      "affected_paths": [],
-      "_steward_note": "A15: 16KB page size boot, ro.boot.hardware.cpu.pagesize, Virtual A/B v3. See HS-032."
+      "dirty_reason": "android_version_bump",
+      "affected_paths": ["bootable/libbootloader/", "bootloader/lk/", "bootable/bootloader/"],
+      "_steward_note": "A16 delta: GBL source confirmed at bootable/libbootloader, UEFI protocols (AVB/BOOT_CONTROL/AVF), android_esp_a/b partitions, Qualcomm GBL exploit March 2026. See HS-034 (updated), HS-040."
     },
     "L2-trusted-firmware-atf-expert": {
       "status": "dirty",
