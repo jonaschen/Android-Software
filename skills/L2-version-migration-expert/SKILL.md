@@ -80,29 +80,58 @@ Step 5: VALIDATION
 
 ### 16KB Page Size Migration
 
+Android 15+ is page-size agnostic: devices can run with 4KB or 16KB kernels. Google Play mandates 16KB compliance by **May 31, 2026** for all apps with native code targeting Android 15+.
+
+**Scope of impact:**
+
+| Component | Affected? | Key Action |
+|-----------|-----------|------------|
+| Shared libraries (`.so`) | Yes | ELF PT_LOAD alignment must be 0x4000 (16384) |
+| Executables | Yes | Same alignment requirement |
+| JNI libraries | Yes | Recompile with `-Wl,-z,max-page-size=16384` |
+| Prebuilt vendor blobs | Yes | Must be rebuilt by SoC vendor (linker flag alone won't fix) |
+| APKs with native code | Yes | ZIP alignment to 16KB required (AGP 8.5.1+ handles automatically) |
+| Kernel modules (`.ko`) | Yes | Rebuild against 16KB GKI kernel |
+| Native code with `mmap()` | Yes | Offsets must be multiples of 16KB; no hardcoded `4096` |
+| Pure Java/Kotlin apps | No | No changes needed |
+
+**Quick detection:**
+
+```bash
+# Check a single .so
+readelf -lW lib.so | grep LOAD
+# FAIL if Align = 0x1000 (4KB); PASS if Align = 0x4000 (16KB)
+
+# Batch scan vendor libraries
+find out/target/product/*/vendor/lib64/ -name "*.so" -exec sh -c '
+  a=$(readelf -lW "$1" 2>/dev/null | grep LOAD | head -1 | awk "{print \$NF}")
+  [ "$a" = "0x1000" ] && echo "FAIL: $1"
+' _ {} \;
+
+# Check APK alignment
+zipalign -v -c -P 16 4 my_app.apk
 ```
-Why: ARM64 chips increasingly use 16KB hardware page granule.
-     Android 15 requires ALL binaries to be 16KB-page-aligned.
 
-Impact:
-  - Shared libraries (.so): ELF segment alignment must be 16KB (0x4000)
-  - Executables: Same
-  - JNI libraries: Must be recompiled with updated linker flags
-  - Prebuilt blobs: Must be rebuilt by SoC vendor
+**Quick fix (Android.bp):**
 
-Detection:
-  python3 tools/extract-utils/check_elf_alignment.py <lib.so>
-  adb shell cat /proc/cpuinfo | grep "CPU architecture"
-
-Fix (Android.bp):
-  cc_library_shared {
-      ...
-      ldflags: ["-Wl,-z,max-page-size=16384"],
-  }
-
-Verification:
-  readelf -lW <lib.so> | grep LOAD   ← Check all LOAD segments are 0x4000 aligned
 ```
+cc_library_shared {
+    name: "my_library",
+    ldflags: ["-Wl,-z,max-page-size=16384"],
+}
+```
+
+**Build-time enforcement (Android 16+):**
+
+```makefile
+PRODUCT_MAX_PAGE_SIZE_SUPPORTED := 16384
+PRODUCT_NO_BIONIC_PAGE_SIZE_MACRO := true
+PRODUCT_CHECK_PREBUILT_MAX_PAGE_SIZE := true
+```
+
+**Key anti-patterns to audit:** hardcoded `4096`/`0x1000`, `#define PAGE_SIZE`, `mmap()` with non-page-aligned offsets, `MAP_FIXED` with 4KB addresses, buffer sizes as `N * 4096`, alignment checks `% 4096`.
+
+> **Full audit checklist:** See `references/16kb_page_migration_guide.md` for 8 concrete audit steps covering ELF alignment, APK ZIP alignment, hardcoded constants, mmap usage, kernel config, bootloader detection, prebuilt libraries, and platform build configuration.
 
 ### VINTF Compatibility Check
 
@@ -204,6 +233,7 @@ Emit `[L2 MIGRATION → HANDOFF]` before transferring.
 ## References
 
 - `references/a14_to_a15_migration_checklist.md` — itemized A14→A15 change log with required actions.
+- `references/16kb_page_migration_guide.md` — 16KB page size audit checklist with 8 concrete audit steps.
 - `memory/dirty_pages.json` — current skill refresh status by Android version.
 - `cts/` — CTS test modules organized by feature area.
 - `ANDROID_SW_OWNER_DEV_PLAN.md §5` — L2 skill design spec.

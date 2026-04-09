@@ -190,13 +190,56 @@ RULE: All userspace-visible interfaces (sysfs, ioctl, /dev nodes) must be
 stable. Changing them breaks binary compatibility with userspace blobs.
 ```
 
+### 16KB Page Size Kernel Configuration
+
+Android 15+ supports both 4KB and 16KB page sizes. OEMs must build and ship 16KB-capable kernels for devices with ARM64 16KB TLB granule hardware.
+
+**Kernel config options:**
+
+```
+# Enable 16KB pages (new)
+CONFIG_ARM64_16K_PAGES=y
+
+# Legacy 4KB pages (default)
+CONFIG_ARM64_4K_PAGES=y
+```
+
+**Kleaf build flag:**
+
+```bash
+--page_size=16k
+```
+
+**Kernel image header:** The page size is encoded at byte offset 25 of the kernel image:
+- `0` = Unspecified, `1` = 4KB, `2` = 16KB, `3` = 64KB
+
+The bootloader reads this to select the correct DTB and kernel configuration.
+
+**GKI 16KB builds:** Available on-demand from `android15-6.6` and `android16-6.12`. OEMs can request 16KB GKI builds alongside the default 4KB builds.
+
+**Dual boot images:** Devices supporting the Developer Option toggle ship two boot images (4K + 16K) to allow page-size switching. This requires:
+- `BOARD_KERNEL_PATH_16K` — path to prebuilt 16KB kernel
+- `BOARD_KERNEL_MODULES_16K` — 16KB kernel modules
+- `BOARD_16K_OTA_USE_INCREMENTAL := true` — reduces OTA size
+
+**Vendor module impact:** All vendor `.ko` modules must be rebuilt against the 16KB GKI kernel. Modules built against a 4KB kernel will fail ABI checks on a 16KB kernel.
+
+**Verification on device:**
+
+```bash
+adb shell getconf PAGE_SIZE                    # Expected: 16384
+adb shell zcat /proc/config.gz | grep 16K      # CONFIG_ARM64_16K_PAGES=y
+```
+
+> **Deep-dive:** See `references/16kb_page_migration_guide.md` for the full audit checklist (ELF alignment, mmap, hardcoded constants, build config, testing strategy).
+
 ### Android 15 GKI / Kernel Changes
 
 | Change | Impact |
 |--------|--------|
 | GKI android15-6.6 (Linux 6.6 LTS) | New kernel baseline; one GKI per release (no android15-6.1) |
 | KMI break from A14 | android14-6.1 KMI not compatible with android15-6.6; full module rebuild required |
-| 16KB page size GKI builds | Available as on-demand builds alongside 4KB default |
+| 16KB page size GKI builds | Available as on-demand builds alongside 4KB default; see section above |
 | android14-6.1 forward-compatible | Can still run on A15 devices, but cannot swap kernel without module rebuild |
 
 ---
@@ -260,6 +303,7 @@ Emit `[L2 KERNEL → HANDOFF]` before transferring.
 ## References
 
 - `references/gki_module_development_guide.md` — GKI module authoring, KMI symbol lists, and signing.
+- `references/16kb_page_migration_guide.md` — 16KB page size audit checklist (kernel config, Kleaf flags, dual boot images).
 - `kernel/android/abi_gki_aarch64.xml` — KMI symbol allowlist (authoritative).
 - `kernel/configs/android-base.config` — mandatory GKI Kconfig options.
 - `ANDROID_SW_OWNER_DEV_PLAN.md §5` — L2 skill design spec.
