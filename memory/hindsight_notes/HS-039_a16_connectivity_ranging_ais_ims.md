@@ -2,7 +2,7 @@
 id: HS-039
 title: "Android 16 connectivity: unified ranging module, AIS Bluetooth, IMS APIs"
 skill: L2-connectivity-network-expert
-date: 2026-04-09
+date: 2026-04-11
 source: research-session
 ---
 
@@ -44,12 +44,39 @@ Path: `packages/services/Telephony/`, `frameworks/base/telephony/`
 New `SoftApCallback#onClientsDisconnected` method providing disconnect reasons.
 Path: `packages/modules/Wifi/`
 
+### 5. Bluetooth Bond Loss Handling
+
+Two new Bluetooth intents for improved bond loss awareness:
+- `ACTION_KEY_MISSING`: broadcast when remote bond loss is detected
+- `ACTION_ENCRYPTION_CHANGE`: broadcast when encryption status, algorithm, or
+  key size changes on the link
+
+These give apps greater visibility into Bluetooth security state transitions.
+Path: `packages/modules/Bluetooth/`
+
+### 6. Bluetooth LE Audio Sharing
+
+Bluetooth Audio Sharing allows connecting multiple LE Audio headphones
+simultaneously. Requires Bluetooth LE-supported earbuds. This is a
+framework-level multi-device audio routing change.
+Path: `packages/modules/Bluetooth/`, `frameworks/av/`
+
+### 7. CompanionDeviceManager removeBond API
+
+New public `removeBond(int)` API in `CompanionDeviceManager` allows apps
+targeting A16 to unpair Bluetooth devices programmatically via CDM
+associations.
+Path: `frameworks/base/core/`
+
 ## Lesson
 
 The connectivity skill should be updated for A16 to document:
 1. The unified ranging module as a new cross-technology API surface
 2. AIS as a new Bluetooth GATT service that BSP teams need to support
 3. IMS API expansion for telephony framework integrators
+4. Bond loss intents (ACTION_KEY_MISSING, ACTION_ENCRYPTION_CHANGE)
+5. LE Audio Sharing multi-device audio routing
+6. CDM removeBond API for programmatic Bluetooth unpairing
 
 The ranging module unification is particularly significant — it moves from
 technology-specific APIs (UWB SDK, WiFi RTT API) to a single ranging

@@ -2,7 +2,7 @@
 id: HS-038
 title: "Android 16 QPR2 SELinux IOCTL hardening macro and KeyMint 4.0 attestation"
 skill: L2-security-selinux-expert
-date: 2026-04-09
+date: 2026-04-11
 source: research-session
 ---
 
@@ -29,6 +29,13 @@ Impact for BSP developers:
 
 This builds on HS-027 (IOCTL hardening in QPR2 context) with concrete
 implementation details now available.
+
+SoC-specific operational requirements:
+- IOCTL allowlists must be synchronized with both userspace and kernel drivers
+- Individual SoCs must update their IOCTL lists per device upon driver release
+- ARM publishes updated IOCTL lists for Mali GPU upon driver updates
+- Tested on Pixel 6-9 (Mali GPU) with no measurable GPU performance impact
+- Change is opt-in for OEMs but expected to become default in future AOSP
 
 ### 2. KeyMint 4.0 with APEX Module Integrity
 

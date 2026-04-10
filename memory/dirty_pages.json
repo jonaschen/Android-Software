@@ -3,7 +3,7 @@
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
   "_last_updated": "2026-04-11",
   "_android_version_baseline": "Android 15",
-  "_research_note": "2026-04-11: Phase 5.2 complete — bootloader skill refreshed for GBL (v2.0.0, android_version_tested: Android 16). L1 router updated with GBL paths. ATF + pKVM handoffs updated. GBL architecture reference created. Six skills still dirty for A16 (bootloader now clean). Prior notes HS-023..HS-041 valid.",
+  "_research_note": "2026-04-11: Incremental research session. Six skills remain dirty for A16. Updated HS-038 (IOCTL SoC-specific allowlist detail) and HS-039 (Bluetooth bond loss intents, LE Audio Sharing, CDM removeBond). AOSP A16 source expected April 2026 (Q2 drop). No new GKI 6.12 errata. Prior notes HS-023..HS-041 valid.",
 
   "skills": {
     "L1-aosp-root-router": {
