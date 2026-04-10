@@ -1,9 +1,9 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-04-10",
+  "_last_updated": "2026-04-11",
   "_android_version_baseline": "Android 15",
-  "_research_note": "2026-04-10: GBL source path confirmed (bootable/libbootloader), Qualcomm GBL exploit disclosed (HS-040), AIDL CAP interface named (HS-041). Six skills now dirty for A16. A15 baseline remains current. Prior notes HS-023..HS-039 also valid.",
+  "_research_note": "2026-04-11: Phase 5.2 complete — bootloader skill refreshed for GBL (v2.0.0, android_version_tested: Android 16). L1 router updated with GBL paths. ATF + pKVM handoffs updated. GBL architecture reference created. Six skills still dirty for A16 (bootloader now clean). Prior notes HS-023..HS-041 valid.",
 
   "skills": {
     "L1-aosp-root-router": {
@@ -86,12 +86,12 @@
       "_steward_note": "A16 delta: GKI android16-6.12 (Linux 6.12 LTS, latest 6.12.69), KMI break from android15-6.6, 16KB page GKI on-demand builds. See HS-023, HS-033."
     },
     "L2-bootloader-lk-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": ["bootable/libbootloader/", "bootloader/lk/", "bootable/bootloader/"],
-      "_steward_note": "A16 delta: GBL source confirmed at bootable/libbootloader, UEFI protocols (AVB/BOOT_CONTROL/AVF), android_esp_a/b partitions, Qualcomm GBL exploit March 2026. See HS-034 (updated), HS-040."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-11",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "Phase 5.2: Skill refreshed to v2.0.0 covering GBL (Android 16). GBL architecture, UEFI protocols, ESP partition layout, security model, source layout, build instructions all documented. References: gbl_boot_architecture.md. See HS-034, HS-040."
     },
     "L2-trusted-firmware-atf-expert": {
       "status": "dirty",

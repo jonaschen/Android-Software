@@ -198,7 +198,7 @@ Each L2 skill must include:
 | # | Task | Output | Status |
 |---|------|--------|--------|
 | 5.1 | Android A16 validation pass | Update `android_version_tested` to Android 16 across all skills; document A15→A16 deltas per skill; leverage HS-033–HS-036 forward intelligence | ⏳ Not started |
-| 5.2 | GBL bootloader skill refresh | Expand L2-bootloader-lk-expert to cover Generic Bootloader (GBL) alongside LK; update path_scope, architecture intelligence, and skill name if warranted (ref: HS-034) | ⏳ Not started |
+| 5.2 | GBL bootloader skill refresh | Expand L2-bootloader-lk-expert to cover Generic Bootloader (GBL) alongside LK; update path_scope, architecture intelligence, and skill name if warranted (ref: HS-034) | ✅ Done |
 | 5.3 | 16KB page size deep-dive content | Add 16KB page size migration guidance to L2-kernel-gki-expert and L2-version-migration-expert; create `references/16kb_page_migration_guide.md` with concrete audit steps | ✅ Done |
 | 5.4 | Live routing accuracy benchmark | Implement a real router in `test_router.py` that loads SKILL.md path_scope fields and matches test-case paths; exit stub mode; target ≥95% accuracy on 100 cases | ✅ Done (100%) |
 | 5.5 | Documentation refresh | Update README.md Alpha Status to reflect Phase 4 completion; update repository layout section; add Phase 5 references | ✅ Done |
@@ -237,4 +237,4 @@ Each L2 skill must include:
 
 ---
 
-*Roadmap v1.3 — Phase 4 complete (2026-04-08): detect_dirty_pages.py, migration_impact.py, skill_lint.py, L3 extension framework, A15 validation pass. Phase 5 defined (2026-04-09): A16 readiness, GBL bootloader, 16KB page guide, live routing benchmark. Phase 5.3 complete (2026-04-10): 16KB page migration guide with 8 audit steps, kernel-gki and version-migration skills updated. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*
+*Roadmap v1.3 — Phase 4 complete (2026-04-08): detect_dirty_pages.py, migration_impact.py, skill_lint.py, L3 extension framework, A15 validation pass. Phase 5 defined (2026-04-09): A16 readiness, GBL bootloader, 16KB page guide, live routing benchmark. Phase 5.3 complete (2026-04-10): 16KB page migration guide with 8 audit steps, kernel-gki and version-migration skills updated. Phase 5.2 complete (2026-04-11): GBL bootloader skill refresh — SKILL.md v2.0.0 with GBL architecture, UEFI protocols, ESP partitions, security model; gbl_boot_architecture.md reference; L1 router + ATF + pKVM handoffs updated. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*

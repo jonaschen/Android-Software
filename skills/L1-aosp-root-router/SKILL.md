@@ -41,7 +41,7 @@ This skill covers the entire AOSP root. All paths below are authoritative physic
 | Native framework, libgui, libui, SurfaceFlinger | `frameworks/native/`, `frameworks/native/services/surfaceflinger/` | `L2-framework-services-expert` |
 | init process, `.rc` files, `init.rc`, service definitions | `system/core/init/`, `*.rc` (any path) | `L2-init-boot-sequence-expert` |
 | Boot sequence, early init, property service, ueventd | `system/core/`, `system/core/init/`, `system/core/property_service/` | `L2-init-boot-sequence-expert` |
-| Bootloader, fastboot, recovery | `bootable/`, `bootable/recovery/` | `L2-init-boot-sequence-expert` |
+| Bootloader recovery mode, `bootable/recovery/` | `bootable/recovery/` | `L2-init-boot-sequence-expert` |
 | Android OS version migration, A14→A15 diff, upgrade impact | Cross-cutting (diff analysis) | `L2-version-migration-expert` |
 | 16KB page size migration, alignment requirements | `bionic/`, `build/soong/`, cross-cutting | `L2-version-migration-expert` |
 | API compatibility, CTS, API level changes | `cts/`, `frameworks/base/api/`, `compatibility/` | `L2-version-migration-expert` |
@@ -54,6 +54,8 @@ This skill covers the entire AOSP root. All paths below are authoritative physic
 | Bluetooth, BluetoothService, BT HAL | `packages/apps/Bluetooth/`, `system/bt/`, `hardware/interfaces/bluetooth/` | `L2-connectivity-network-expert` |
 | GKI kernel modules, loadable modules, Kconfig | `kernel/`, `drivers/`, `common/` | `L2-kernel-gki-expert` |
 | Kernel driver interface, vendor kernel module | `drivers/`, `kernel/configs/` | `L2-kernel-gki-expert` |
+| Generic Bootloader (GBL), UEFI boot chain, `BOOTAA64.EFI`, `android_esp` partitions | `bootable/libbootloader/`, `bootable/libbootloader/gbl/` | `L2-bootloader-lk-expert` |
+| GBL EFI protocols, `GBL_EFI_AVB_PROTOCOL`, `GBL_EFI_BOOT_CONTROL_PROTOCOL` | `bootable/libbootloader/gbl/libefi/` | `L2-bootloader-lk-expert` |
 | little-kernel bootloader, LK source, fastboot protocol, partition table, ABL | `bootloader/lk/`, `bootable/bootloader/` ¹ | `L2-bootloader-lk-expert` |
 | Fastboot commands, `aboot`, A/B slot selection, boot image loading, AVB | `bootloader/lk/app/aboot/` ¹ | `L2-bootloader-lk-expert` |
 | ARM Trusted Firmware, ATF, TF-A, BL1, BL2, BL31, BL32, Secure Monitor (EL3) | `atf/`, `arm-trusted-firmware/` ¹ | `L2-trusted-firmware-atf-expert` |

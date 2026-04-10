@@ -195,6 +195,7 @@ atest MicrodroidTests
 | SMC call interaction between pKVM and ATF BL31 | `L2-trusted-firmware-atf-expert` |
 | `VirtualMachineManager` API surface change | `L2-framework-services-expert` |
 | `Android.bp` build issues for `rust_binary` AVF targets | `L2-build-system-expert` |
+| GBL pvmfw loading via `GBL_EFI_AVF_PROTOCOL` (bootloader-stage AVF) | `L2-bootloader-lk-expert` |
 | Android version migration (AVF API compat) | `L2-version-migration-expert` |
 
 Emit `[L2 VIRT → HANDOFF]` before transferring.

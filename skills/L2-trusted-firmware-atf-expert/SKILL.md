@@ -86,10 +86,11 @@ BL31 (EL3 Runtime Firmware / Secure Monitor)  ←── STAYS RESIDENT IN EL3 FO
   │    │  Job: Execute Trusted Applications (TAs) for Keymaster, DRM, etc.
   │    └──► Trusted Applications (TAs): key operations, DRM, biometric
   │
-  └──► BL33 (Non-Trusted Firmware)
-       │  = little-kernel (LK) / ABL / U-Boot
-       │  Job: Android bootloader → loads kernel
-       └──► BL33 hands off to Linux kernel
+  └──► BL33 (Non-Trusted Firmware) = UEFI Firmware
+       │  Provides UEFI services (Android 16+: required for GBL)
+       │  Or: little-kernel (LK) / ABL / U-Boot (legacy)
+       │  Job: Load Android bootloader (GBL or LK) → loads kernel
+       └──► BL33 hands off to GBL/LK → Linux kernel
 ```
 
 ### SMC (Secure Monitor Call) Interface
@@ -258,7 +259,8 @@ adb shell cat /sys/devices/system/cpu/cpu*/online
 
 | Condition | Hand off to |
 |-----------|------------|
-| Bootloader (LK/ABL) hands off to kernel — boot failure | `L2-bootloader-lk-expert` |
+| Bootloader (GBL/LK/ABL) hands off to kernel — boot failure | `L2-bootloader-lk-expert` |
+| UEFI firmware providing EFI protocols for GBL | `L2-bootloader-lk-expert` |
 | Trusty tipc kernel driver (`drivers/trusty/`) issue | `L2-kernel-gki-expert` |
 | KeyMint HAL AIDL interface (non-secure side) | `L2-hal-vendor-interface-expert` |
 | SELinux denial for Trusty device node (`/dev/trusty-ipc-dev0`) | `L2-security-selinux-expert` |

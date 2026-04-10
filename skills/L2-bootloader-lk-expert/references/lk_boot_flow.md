@@ -1,7 +1,55 @@
-# little-kernel (LK) Boot Flow Reference
+# Android Bootloader Reference — LK and GBL
 
-> Applies to: Qualcomm ABL / little-kernel, Android 14
-> Note: LK source is not in standard AOSP. Paths reflect Qualcomm BSP convention.
+> Applies to: Qualcomm ABL / little-kernel (Android 14–15+), Generic Bootloader / GBL (Android 16+)
+> Note: LK source is not in standard AOSP. GBL source is in AOSP at `bootable/libbootloader/`.
+
+## Bootloader Landscape
+
+As of Android 16, two bootloader ecosystems coexist:
+
+| Bootloader | Era | Language | Build System | AOSP Source | Key Trait |
+|-----------|-----|----------|-------------|-------------|-----------|
+| **GBL** (Generic Bootloader) | Android 16+ | Rust | Bazel | `bootable/libbootloader/` | Standardized, updatable UEFI app |
+| **LK** (little-kernel) / ABL | Android 4–16 | C | Make/CMake | Vendor BSP (`bootloader/lk/`) | SoC/OEM-specific, mature |
+
+GBL is **strongly recommended** for new ARM-64 devices. Existing devices shipping with LK/U-Boot may continue using them. Both share the same fundamental responsibilities: load + verify + boot the kernel.
+
+---
+
+## GBL Boot Flow (Android 16+)
+
+See `references/gbl_boot_architecture.md` for full GBL architecture details.
+
+```
+UEFI Firmware provides EFI services
+              │
+              ▼
+        GBL entry (EFI application)       ← /EFI/BOOT/BOOTAA64.EFI
+              │
+        Boot mode detection               ← key press / BCB flag / reboot reason
+              │
+        ┌─────────────────────────────────────┐
+        │  GBL decision tree:                  │
+        │  KEY held?   → fastboot mode         │
+        │  BCB flag?   → recovery mode         │
+        │  default     → normal boot           │
+        └─────────────────────────────────────┘
+              │
+        ┌─────▼──────────────────────────────┐
+        │        GBL Normal Boot Path         │
+        │  1. Query slot via BOOT_CONTROL     │
+        │  2. Read boot.img via BLOCK_IO      │
+        │  3. AVB verification via AVB proto  │
+        │  4. Load pvmfw via AVF protocol     │
+        │  5. Load kernel + initrd + DTB      │
+        │  6. Build kernel cmdline + bootcfg  │
+        │  7. Jump to kernel entry point      │
+        └─────────────────────────────────────┘
+```
+
+---
+
+## LK Boot Flow (Legacy + Current)
 
 ## What is little-kernel?
 
