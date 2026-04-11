@@ -2,8 +2,8 @@
 name: version-migration-expert
 layer: L2
 path_scope: cross-cutting (diff analysis across all paths)
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -77,6 +77,20 @@ Step 5: VALIDATION
 | Java API | `android.os.StrictMode` new methods | Update callers |
 | Build | `soong_config_module_type` syntax changes | Audit all `soong_config_variables` blocks |
 | Kernel | GKI 6.6 → 6.12 transition | Module ABI re-validation required |
+
+### Android 15 → 16 Key Changes
+
+| Area | Change | Action Required |
+|------|--------|----------------|
+| Kernel | GKI android16-6.12 (Linux 6.12 LTS); KMI break from android15-6.6 | Full vendor module rebuild; audit for EEVDF, per-VMA locks, Clang 19 bounds checking. See HS-033. |
+| Build | Partition image isolation; module name validation enforced; genrule directory inputs disallowed; M4 removed from PATH | Audit `PRODUCT_PACKAGES` completeness; fix module names with special chars. See HS-036. |
+| SELinux | IOCTL hardening macro (QPR2); KeyMint 4.0 moduleHash attestation | Audit vendor kernel driver IOCTLs against restricted list. See HS-038. |
+| Multimedia | CAP AIDL fixed; APV codec; AV1 transition; HDR enhancements | Remove CAP AIDL workarounds; test new codec support. See HS-035. |
+| Connectivity | Unified ranging module; AIS Bluetooth GATT; IMS API expansion; BT bond loss intents; LE Audio Sharing | Test unified ranging HAL; update BT integration tests. See HS-039. |
+| AVF/pKVM | LL-NDK; early boot VMs; FF-A; Ferrochrome; Microdroid 16K; device assignment promoted | Vendor AVF integration; FF-A TrustZone changes. See HS-037. |
+| ATF | FF-A dispatcher; Trusty in pVMs; KeyMint 4.0 | ATF BL31 FF-A integration; multi-Trusty awareness. See HS-037, HS-038. |
+| Bootloader | GBL (Generic Bootloader) replaces LK for new devices | UEFI firmware required for GBL; ESP partition layout. See HS-034. |
+| HAL | `BOARD_HAL_STATIC_LIBRARIES` deprecated; AIDL mandatory for all new HALs | Migrate remaining HIDL HALs. See HS-036. |
 
 ### 16KB Page Size Migration
 

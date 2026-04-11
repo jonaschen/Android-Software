@@ -2,8 +2,8 @@
 name: build-system-expert
 layer: L2
 path_scope: build/, Android.bp, Android.mk, *.bp, *.mk, prebuilts/, toolchain/, bionic/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -117,6 +117,20 @@ User runs: m <target>
 | System property duplication error | Multiple assignments for same property per partition now fail |
 | Dexpreopt uses-library checks | Java modules must declare `uses_libs` / `optional_uses_libs` |
 | Soong plugin validation | New plugins restricted to vendor/hardware directories |
+
+### Android 16 Build System Changes
+
+| Change | Impact |
+|--------|--------|
+| Partition image isolation | Partition builds now only include modules explicitly listed in `PRODUCT_PACKAGES`; prior builds could inherit artifacts from previous builds. Use `BUILD_BROKEN_INCORRECT_PARTITION_IMAGES` to temporarily revert. Audit `PRODUCT_PACKAGES` for completeness. |
+| Module name validation (enforced) | Module names restricted to `a-z A-Z 0-9 _.+-=,@~`; modules with `/` in names must move directories to `LOCAL_MODULE_RELATIVE_PATH` |
+| Genrule directory inputs disallowed | Genrules must specify individual files, not directories. Use `BUILD_BROKEN_INPUT_DIR_MODULES` to allowlist. |
+| M4 removed from PATH | Must use prebuilt version and set `M4` env variable explicitly in rules |
+| Ninja environment isolation | `ALLOW_NINJA_ENV=false` becoming default; env variables must be passed explicitly in command lines |
+| `BOARD_HAL_STATIC_LIBRARIES` deprecated | Use HIDL/Stable AIDL HAL definitions instead |
+| Bazel incremental migration | Each Soong plugin requires manual migration; new plugins only allowed in `vendor/`/`hardware/` dirs; Bazel alongside Soong, not replacing it |
+
+> See HS-036 for details. BSP engineers must audit `PRODUCT_PACKAGES` for completeness — implicit partition inheritance is gone.
 
 ---
 

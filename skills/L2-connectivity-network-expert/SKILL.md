@@ -2,8 +2,8 @@
 name: connectivity-network-expert
 layer: L2
 path_scope: packages/modules/Connectivity/, system/netd/, system/bt/, packages/modules/Wifi/, hardware/interfaces/wifi/, hardware/interfaces/bluetooth/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -151,6 +151,18 @@ Kernel HCI driver (/dev/ttyHS*, /dev/btusb*)
 | 802.11az Wi-Fi RTT | IEEE 802.11az protocol support for Wi-Fi ranging |
 | NFC: proprietary NCI commands | New Android Proprietary NCI Commands interface |
 | Watch companion profile update | `POST_NOTIFICATIONS` permission added to watch device profile |
+
+### Android 16 Connectivity Changes
+
+| Change | Impact |
+|--------|--------|
+| Unified Ranging Module | New mainline module aggregating UWB, Bluetooth Channel Sounding, BT RSSI, and Wi-Fi RTT APIs into a single ranging abstraction. Path: `packages/modules/Uwb/` (expanded scope). BSP teams must test unified ranging HAL interactions across all technologies. |
+| Android Information Service (AIS) | New Bluetooth GATT characteristic lets BT devices read the Android API level. Path: `packages/modules/Bluetooth/`. Peripherals can adapt behavior based on connected Android version. |
+| IMS Service API expansion | New system APIs: traffic session management, EPS fallback triggers, `EmergencyCallbackModeListener`. Path: `packages/services/Telephony/`, `frameworks/base/telephony/` |
+| Wi-Fi SoftAp disconnect callback | New `SoftApCallback#onClientsDisconnected` method providing disconnect reasons. Path: `packages/modules/Wifi/` |
+| Bluetooth bond loss intents | `ACTION_KEY_MISSING` (remote bond loss detected) and `ACTION_ENCRYPTION_CHANGE` (encryption status/algorithm/key size change). Improve visibility into BT security state transitions. |
+| Bluetooth LE Audio Sharing | Multi-device audio routing — multiple LE Audio headphones simultaneously. Requires LE Audio-capable earbuds. Path: `packages/modules/Bluetooth/`, `frameworks/av/` |
+| CompanionDeviceManager removeBond | New public `removeBond(int)` API for programmatic BT unpairing via CDM associations. Path: `frameworks/base/core/` |
 
 ---
 

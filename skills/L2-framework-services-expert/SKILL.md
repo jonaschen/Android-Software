@@ -2,8 +2,8 @@
 name: framework-services-expert
 layer: L2
 path_scope: frameworks/base/, frameworks/native/, libcore/, libnativehelper/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 

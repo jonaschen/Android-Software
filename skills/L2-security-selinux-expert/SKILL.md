@@ -2,8 +2,8 @@
 name: security-selinux-expert
 layer: L2
 path_scope: system/sepolicy/, vendor/*/sepolicy/, device/*/sepolicy/, *.te, file_contexts, property_contexts, service_contexts
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -131,6 +131,21 @@ ro.myapp.version                    u:object_r:vendor_myapp_prop:s0
 | Private space isolation | New SELinux domain boundaries for the Private Space feature (secure area hiding sensitive apps) |
 | FBE `dusize_4k` flag | New file-based encryption config option forcing 4096-byte data units |
 | Mobile network transparency | New privacy settings notify users of unencrypted connections and IMSI/IMEI exposure |
+
+### Android 16 SELinux / Security Changes
+
+| Change | Impact |
+|--------|--------|
+| IOCTL hardening macro (QPR2) | New SELinux macro blocks restricted IOCTLs in production builds; vendor kernel drivers using custom IOCTLs must be audited against the restricted list. GPU drivers (Adreno, Mali, PowerVR) are primary targets. Development/profiling IOCTLs allowed in userdebug, blocked in user builds. SoC-specific IOCTL allowlists must be synchronized with both userspace and kernel drivers. See HS-038. |
+| KeyMint 4.0 moduleHash attestation | New `moduleHash` field in KeyDescription attestation structure enables verification of APEX module integrity through attestation certs; ties hardware-backed attestation chain to software module state. Path: `hardware/interfaces/security/keymint/` |
+| KeyMint in protected VM | Combined with pKVM early boot VMs (HS-037), KeyMint can now run in a pVM before the full Android framework starts, changing the security domain model |
+
+**IOCTL hardening audit workflow:**
+1. Identify all vendor IOCTLs in your kernel drivers
+2. Check each IOCTL against the restricted list in `system/sepolicy/`
+3. Classify: production-required vs. development-only vs. profiling-only
+4. Ensure development/profiling IOCTLs are gated on `userdebug`/`eng` builds
+5. Synchronize IOCTL allowlists with vendor HAL userspace components
 
 ---
 

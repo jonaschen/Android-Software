@@ -2,8 +2,8 @@
 name: L2-virtualization-pkvm-expert
 layer: L2
 path_scope: packages/modules/Virtualization/, external/crosvm/, frameworks/libs/vmbase/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -126,6 +126,26 @@ crosvm process (host EL0)
 | AVF SELinux policy | `system/sepolicy/private/virtualizationservice.te`, `microdroid_manager.te` |
 | AVF AIDL | `packages/modules/Virtualization/virtualizationservice/aidl/` |
 | `vm` CLI tool | `packages/modules/Virtualization/vm/` |
+
+### Android 16 AVF / pKVM Changes
+
+| Change | Impact |
+|--------|--------|
+| AVF LL-NDK support | Vendors can launch VMs from the vendor partition using Google-managed AVF. New Low-Level NDK surface exposes AVF capabilities to native vendor code. |
+| Early boot VM support | VMs can run earlier in the boot process, enabling security-critical payloads like KeyMint HALs to be isolated in a pVM before the full Android framework starts. Cross-skill impact with init/boot sequence. |
+| FF-A support | pKVM supports FF-A (Firmware Framework for Arm A-profile) for standardized secure communication with TrustZone. Replaces ad-hoc SMC-based communication. Requires kernel-level FF-A support. |
+| Ferrochrome Linux terminal | Debian-based Linux terminal running inside a VM via AVF/crosvm. Developer-facing feature. Path: `external/crosvm/`, `packages/modules/Virtualization/` |
+| Microdroid 16K + resizable storage | 16KB page protected VM support and resizable encrypted storage for improved performance. |
+| Trusty OS in pVMs | Standard TAs can now run TrustZone-style applets inside protected VMs, not just in traditional TrustZone. Blurs ATF/pKVM boundary. |
+| Device assignment promoted | Graduated from experimental (A15) to supported. Platform devices can be directly assigned to pVMs for hardware access. |
+| Hypervisor tracing | Structured logging events and improved function tracing for pKVM debugging. |
+
+**A16 AVF capability model changes:**
+- **LL-NDK** is a new API surface — vendor HALs can now interact with AVF directly
+- **Early boot VMs** change the boot dependency order — coordinate with `L2-init-boot-sequence-expert`
+- **FF-A** changes the TrustZone communication model — coordinate with `L2-trusted-firmware-atf-expert`
+- **Device assignment** is no longer experimental — pVMs can hold direct hardware access
+- **Hypervisor tracing** hooks into kernel tracing infrastructure — coordinate with `L2-kernel-gki-expert`
 
 ---
 

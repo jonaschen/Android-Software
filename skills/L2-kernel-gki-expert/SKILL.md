@@ -2,8 +2,8 @@
 name: kernel-gki-expert
 layer: L2
 path_scope: kernel/, drivers/, common/
-version: 1.0.0
-android_version_tested: Android 15 (GKI 6.6)
+version: 1.1.0
+android_version_tested: Android 16 (GKI 6.12)
 parent_skill: aosp-root-router
 ---
 
@@ -241,6 +241,29 @@ adb shell zcat /proc/config.gz | grep 16K      # CONFIG_ARM64_16K_PAGES=y
 | KMI break from A14 | android14-6.1 KMI not compatible with android15-6.6; full module rebuild required |
 | 16KB page size GKI builds | Available as on-demand builds alongside 4KB default; see section above |
 | android14-6.1 forward-compatible | Can still run on A15 devices, but cannot swap kernel without module rebuild |
+
+### Android 16 GKI / Kernel Changes
+
+| Change | Impact |
+|--------|--------|
+| GKI android16-6.12 (Linux 6.12 LTS) | New kernel baseline; KMI break from android15-6.6; full vendor module rebuild required |
+| EEVDF scheduler replaces CFS | Earliest Eligible Virtual Deadline First scheduler changes scheduling latency; audit RT-priority and SCHED_FIFO code for behavioral changes in audio/media workloads |
+| Per-VMA locks | Fine-grained `mmap_lock` replacement reduces contention in multi-threaded workloads (camera/media pipelines); audit drivers using `mmap_lock` directly |
+| Proxy Execution | Borrows CPU cycles from high-priority processes to help lower-priority lock holders; mitigates priority inversion without PI mutexes |
+| RCU_LAZY | Defers RCU callbacks to reduce power consumption; benefits battery-sensitive use cases |
+| CONFIG_ZRAM_MULTI_COMP | Multi-algorithm ZRAM compression; benefits low-RAM devices |
+| Memory allocation profiling | `CONFIG_MEM_ALLOC_PROFILING` attributes allocations to source line; enable via `sysctl.vm.mem_profiling` |
+| Clang 19.0.1 stricter bounds | `__counted_by` attribute enforces runtime bounds; vendor modules with dynamically-sized arrays must set the size field immediately after allocation or risk kernel panics. `CONFIG_UBSAN_SIGNED_WRAP` disabled to prevent false positives |
+| CONFIG_OF_DYNAMIC default on | Exposes driver bugs in device tree node reference counting (use-after-free, memory leaks); audit all `of_node_get()`/`of_node_put()` calls in vendor drivers |
+| 16KB page GKI on-demand builds | 16KB GKI builds available for both android15-6.6 and android16-6.12 |
+
+**A16 vendor module migration checklist:**
+1. Rebuild all `.ko` modules against android16-6.12 GKI headers (KMI break)
+2. Audit scheduler-sensitive code (RT priorities, `SCHED_FIFO`) for EEVDF behavior
+3. Audit `mmap_lock` usage in drivers for per-VMA lock compatibility
+4. Audit all `__counted_by` annotated arrays — set size field before any access
+5. Audit all OF/device-tree API usage for proper `of_node_put()` calls
+6. Verify module signatures against new GKI signing keys
 
 ---
 

@@ -1,89 +1,89 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-04-11",
-  "_android_version_baseline": "Android 15",
-  "_research_note": "2026-04-11: Incremental research session. Six skills remain dirty for A16. Updated HS-038 (IOCTL SoC-specific allowlist detail) and HS-039 (Bluetooth bond loss intents, LE Audio Sharing, CDM removeBond). AOSP A16 source expected April 2026 (Q2 drop). No new GKI 6.12 errata. Prior notes HS-023..HS-041 valid.",
+  "_last_updated": "2026-04-12",
+  "_android_version_baseline": "Android 16",
+  "_research_note": "2026-04-12: Phase 5.1 A16 validation pass complete. All 13 skills updated to Android 16. Six previously dirty skills (security, multimedia, connectivity, kernel, ATF, pKVM) refreshed with A16 delta content from HS-033 through HS-039. Build and migration skills also updated with A16 content. Delta summary: references/a15_to_a16_delta_summary.md. Full source verification pending AOSP A16 source drop (expected Q2 2026).",
 
   "skills": {
     "L1-aosp-root-router": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": []
     },
     "L2-build-system-expert": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": [],
-      "_steward_note": "A15: sandboxed genrules, Python 2 removed, sysprop ref change, depfile removal, module name validation. See HS-031."
+      "_steward_note": "A16: partition image isolation, module name validation enforced, genrule dir inputs banned, M4 removed, BOARD_HAL_STATIC_LIBRARIES deprecated, Bazel incremental migration. See HS-036."
     },
     "L2-security-selinux-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": ["system/sepolicy/", "hardware/interfaces/security/keymint/"],
-      "_steward_note": "A16 delta: IOCTL hardening macro (QPR2), KeyMint 4.0 moduleHash attestation. See HS-038."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A16: IOCTL hardening macro (QPR2), KeyMint 4.0 moduleHash attestation, KeyMint in pVM. See HS-038."
     },
     "L2-hal-vendor-interface-expert": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": [],
-      "_steward_note": "A15: VNDK deprecated, AIDL mandatory for new HALs, Health HAL 3.0, Thermal HAL 2.0. See HS-031."
+      "_steward_note": "A16: BOARD_HAL_STATIC_LIBRARIES deprecated, AIDL mandatory for new HALs, CAP AIDL completion, unified ranging HAL impact. Cross-skill from HS-035, HS-036, HS-039."
     },
     "L2-framework-services-expert": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": [],
-      "_steward_note": "A15: FGS restrictions from BOOT_COMPLETED, mediaProcessing FGS type, soft restart deprecated. See HS-032."
+      "_steward_note": "A16: IMS SystemApi surfaces, VirtualMachineManager API changes, CDM removeBond API. Cross-skill from HS-037, HS-039."
     },
     "L2-init-boot-sequence-expert": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": [],
-      "_steward_note": "A15: Virtual A/B v3, 16KB page size boot, soft restart deprecated. See HS-032."
+      "_steward_note": "A16: Early boot VMs before full init, GBL bootloader→kernel handoff changes. Cross-skill from HS-034, HS-037."
     },
     "L2-version-migration-expert": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": [],
-      "_steward_note": "A15: baseline updated; migration table verified. 16KB mandatory deadline May 2026."
+      "_steward_note": "A16: A15→A16 migration table added covering kernel, build, SELinux, multimedia, connectivity, AVF/pKVM, ATF, bootloader, HAL. 16KB deadline May 2026."
     },
     "L2-multimedia-audio-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "api_surface_changed",
-      "affected_paths": ["hardware/interfaces/audio/aidl/", "frameworks/av/"],
-      "_steward_note": "A16 delta: AudioHalCapConfiguration.aidl closes CAP gap, APV codec, AV1 transition, HDR enhancements. See HS-035, HS-041."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A16: CAP AIDL fixed, APV codec, AV1 transition, HDR enhancements, Media Quality Framework, EEVDF scheduler impact. See HS-035."
     },
     "L2-connectivity-network-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "api_surface_changed",
-      "affected_paths": ["packages/modules/Uwb/", "packages/modules/Bluetooth/", "packages/modules/Wifi/", "packages/services/Telephony/"],
-      "_steward_note": "A16 delta: unified ranging module, AIS Bluetooth GATT, IMS API expansion, SoftAp disconnect callback. See HS-039."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A16: unified ranging module, AIS Bluetooth GATT, IMS API expansion, SoftAp disconnect callback, BT bond loss intents, LE Audio Sharing, CDM removeBond. See HS-039."
     },
     "L2-kernel-gki-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": ["kernel/"],
-      "_steward_note": "A16 delta: GKI android16-6.12 (Linux 6.12 LTS, latest 6.12.69), KMI break from android15-6.6, 16KB page GKI on-demand builds. See HS-023, HS-033."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A16: GKI android16-6.12 (Linux 6.12 LTS), EEVDF, per-VMA locks, proxy execution, Clang 19 bounds, CONFIG_OF_DYNAMIC, 16KB GKI on-demand. See HS-033."
     },
     "L2-bootloader-lk-expert": {
       "status": "clean",
@@ -94,25 +94,25 @@
       "_steward_note": "Phase 5.2: Skill refreshed to v2.0.0 covering GBL (Android 16). GBL architecture, UEFI protocols, ESP partition layout, security model, source layout, build instructions all documented. References: gbl_boot_architecture.md. See HS-034, HS-040."
     },
     "L2-trusted-firmware-atf-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "api_surface_changed",
-      "affected_paths": ["packages/modules/Virtualization/", "atf/", "trusty/"],
-      "_steward_note": "A16 delta: FF-A support changes pKVM↔TrustZone communication; Trusty OS in pVMs blurs ATF/pKVM boundary. See HS-037."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A16: FF-A support, Trusty in pVMs, early boot VMs for KeyMint, KeyMint 4.0 moduleHash, device assignment promoted. See HS-037, HS-038."
     },
     "L2-virtualization-pkvm-expert": {
-      "status": "dirty",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
-      "dirty_reason": "android_version_bump",
-      "affected_paths": ["packages/modules/Virtualization/", "external/crosvm/"],
-      "_steward_note": "A16 delta: LL-NDK, early boot VMs, FF-A, Ferrochrome, Microdroid 16K, Trusty in pVMs, device assignment promoted, hypervisor tracing. See HS-037."
+      "status": "clean",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_steward_note": "A16: LL-NDK, early boot VMs, FF-A, Ferrochrome, Microdroid 16K, Trusty in pVMs, device assignment promoted, hypervisor tracing. See HS-037."
     },
     "L3-TEMPLATE": {
       "status": "clean",
-      "android_version_tested": "Android 15",
-      "last_validated": "2026-04-08",
+      "android_version_tested": "Android 16",
+      "last_validated": "2026-04-12",
       "dirty_reason": null,
       "affected_paths": [],
       "_note": "Template skill for L3 OEM/SoC extensions. Not a real skill — used as a copy source."

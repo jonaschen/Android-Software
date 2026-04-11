@@ -2,8 +2,8 @@
 name: aosp-root-router
 layer: L1
 path_scope: /  # Root of the AOSP tree — all top-level directories
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: null
 ---
 

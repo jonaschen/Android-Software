@@ -2,8 +2,8 @@
 name: trusted-firmware-atf-expert
 layer: L2
 path_scope: atf/, arm-trusted-firmware/, trusty/, vendor/*/trustzone/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -209,6 +209,18 @@ fip.bin is then flashed to the 'fip' or 'abl' partition.
 |--------|--------|
 | AVF device assignment (experimental) | Peripheral devices can be fully assigned to protected VMs at firmware level; ATF may need new SMC handlers for device passthrough |
 | No direct ATF AOSP API changes | ATF changes for A15 are vendor-driven, not in AOSP mainline |
+
+### Android 16 ATF-Relevant Changes
+
+| Change | Impact |
+|--------|--------|
+| FF-A support (Firmware Framework for Arm A-profile) | pKVM now supports FF-A standardized secure communication with TrustZone for protected VMs. Replaces ad-hoc SMC-based communication with a standardized protocol. ATF BL31 must implement FF-A dispatcher for pKVM↔TrustZone message passing. |
+| Trusty OS in protected VMs | Standard TAs can now run TrustZone-style trusted applets inside pVMs, not just in traditional TrustZone. This blurs the ATF/pKVM boundary — ATF BL31 must be aware of multiple Trusty instances (native TrustZone + pVM-hosted). |
+| Early boot VMs for KeyMint | VMs can run before the full Android framework starts. KeyMint HAL can now run in a pVM, changing the security-critical boot dependency chain. ATF BL31 must ensure pKVM EL2 is fully initialized before early boot VM launch. |
+| KeyMint 4.0 moduleHash attestation | New `moduleHash` field in attestation structure verifies APEX module integrity; ties hardware RoT (established by ATF) to software module state. |
+| Device assignment promoted | Graduated from experimental (A15) to supported; ATF may need IOMMU/SMMU configuration for device passthrough to pVMs. |
+
+> **Key architectural change:** FF-A fundamentally changes how BL31 dispatches secure-world calls. The existing SMC-based TrustZone dispatcher must now coexist with FF-A message-based communication. Vendor ATF ports must integrate the FF-A partition manager alongside existing PSCI and SiP dispatchers.
 
 ---
 

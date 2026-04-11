@@ -2,8 +2,8 @@
 name: multimedia-audio-expert
 layer: L2
 path_scope: frameworks/av/, frameworks/native/services/surfaceflinger/, hardware/interfaces/audio/, hardware/interfaces/camera/, hardware/interfaces/graphics/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 
@@ -150,6 +150,19 @@ Key failure modes:
 | Head tracking over LE Audio | Latency mode adjustments based on head tracking transport |
 | Region of Interest (RoI) video encoding | Standardized RoI integration for video encoding pipelines |
 | Audio AIDL HAL: CAP not ported | Configurable Audio Policy not available in AIDL HAL for A14/A15; blocks OEM migration |
+
+### Android 16 Multimedia Changes
+
+| Change | Impact |
+|--------|--------|
+| CAP AIDL fixed | Configurable Audio Policy AIDL gap from A14/A15 is now resolved; `AudioHalCapConfiguration.aidl` added; Cuttlefish Auto converted to CAP AIDL. Automotive audio policy can now use the AIDL backend. This closes the long-standing blocker documented above. |
+| APV codec support | Advanced Professional Video codec for high-bitrate intra-frame video; targets professional video workflows. New `MediaCodec` component type. |
+| AV1 transition | Platform transitioning toward AV1 from VP8/VP9/H.264 as preferred codec; affects `MediaCodec` defaults and codec selection heuristics |
+| HDR enhancements | SDR fallback via Media3 ExoPlayer, enhanced HDR screenshot support, HLG and DolbyVision capture |
+| Media Quality Framework | Standardized API for Android TV picture/audio quality — per-stream, per-user, per-input-type settings |
+| EEVDF scheduler (kernel) | New EEVDF scheduler in GKI 6.12 may change AudioFlinger thread scheduling latency; audit SCHED_FIFO thread behavior. See HS-033. |
+
+> **Note:** The CAP AIDL fix in A16 is a critical milestone. Skills and build configurations that previously worked around the missing AIDL definitions for CAP can now remove those workarounds and use the standard AIDL backend.
 
 ---
 

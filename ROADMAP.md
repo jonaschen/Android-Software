@@ -22,7 +22,7 @@
 | Git history | Active | Phase 1, 2 & 3 deliverables staged |
 
 ### Current Phase
-**Phase 5 — In Progress** (A16 readiness & quality hardening)
+**Phase 5 — Complete ✅** (A16 readiness & quality hardening — all deliverables 5.1–5.5 done)
 
 Phase 4 — Complete ✅ (all deliverables 4.1–4.5 done)
 
@@ -197,7 +197,7 @@ Each L2 skill must include:
 
 | # | Task | Output | Status |
 |---|------|--------|--------|
-| 5.1 | Android A16 validation pass | Update `android_version_tested` to Android 16 across all skills; document A15→A16 deltas per skill; leverage HS-033–HS-036 forward intelligence | ⏳ Not started |
+| 5.1 | Android A16 validation pass | Update `android_version_tested` to Android 16 across all skills; document A15→A16 deltas per skill; leverage HS-033–HS-039 forward intelligence | ✅ Done |
 | 5.2 | GBL bootloader skill refresh | Expand L2-bootloader-lk-expert to cover Generic Bootloader (GBL) alongside LK; update path_scope, architecture intelligence, and skill name if warranted (ref: HS-034) | ✅ Done |
 | 5.3 | 16KB page size deep-dive content | Add 16KB page size migration guidance to L2-kernel-gki-expert and L2-version-migration-expert; create `references/16kb_page_migration_guide.md` with concrete audit steps | ✅ Done |
 | 5.4 | Live routing accuracy benchmark | Implement a real router in `test_router.py` that loads SKILL.md path_scope fields and matches test-case paths; exit stub mode; target ≥95% accuracy on 100 cases | ✅ Done (100%) |
@@ -221,7 +221,7 @@ Each L2 skill must include:
 | M3: All L2 Skills Ready | End of Phase 2 Tier 3 | All 12 L2 skills deployed, ≥85% subsystem resolution | ✅ 2026-03-15 |
 | M4: Collaborative Agent | End of Phase 3 | 100-case suite, 22 hindsight notes, 12 cross-skill patterns, validator | ✅ 2026-03-15 |
 | M5: Self-Maintaining | End of Phase 4 | Dirty page detection live, ≥80% migration agility, A15 validated | ✅ 2026-04-08 |
-| M6: A16-Ready | End of Phase 5 | A16 validated, GBL covered, 16KB guide, live routing benchmark ≥95% | ⏳ Target: 2026-04 |
+| M6: A16-Ready | End of Phase 5 | A16 validated, GBL covered, 16KB guide, live routing benchmark ≥95% | ✅ 2026-04-12 |
 
 ---
 
@@ -237,4 +237,4 @@ Each L2 skill must include:
 
 ---
 
-*Roadmap v1.3 — Phase 4 complete (2026-04-08): detect_dirty_pages.py, migration_impact.py, skill_lint.py, L3 extension framework, A15 validation pass. Phase 5 defined (2026-04-09): A16 readiness, GBL bootloader, 16KB page guide, live routing benchmark. Phase 5.3 complete (2026-04-10): 16KB page migration guide with 8 audit steps, kernel-gki and version-migration skills updated. Phase 5.2 complete (2026-04-11): GBL bootloader skill refresh — SKILL.md v2.0.0 with GBL architecture, UEFI protocols, ESP partitions, security model; gbl_boot_architecture.md reference; L1 router + ATF + pKVM handoffs updated. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*
+*Roadmap v1.4 — Phase 5 complete (2026-04-12): All deliverables 5.1–5.5 done. Phase 5.1 (2026-04-12): A16 validation pass — all 13 skills updated to Android 16, 6 dirty skills refreshed with A16 deltas from HS-033–HS-039, a15_to_a16_delta_summary.md created, dirty_pages.json baseline set to Android 16. Phase 5.2 (2026-04-11): GBL bootloader skill refresh. Phase 5.3 (2026-04-10): 16KB page migration guide. Phase 5.4 (2026-04-10): Live routing benchmark 100%. Phase 5.5 (2026-04-10): Documentation refresh. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*

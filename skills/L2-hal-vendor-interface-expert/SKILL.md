@@ -2,8 +2,8 @@
 name: hal-vendor-interface-expert
 layer: L2
 path_scope: hardware/interfaces/, vendor/, system/vndk/, frameworks/native/libs/binder/, pdk/
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 

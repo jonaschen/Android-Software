@@ -2,8 +2,8 @@
 name: init-boot-sequence-expert
 layer: L2
 path_scope: system/core/init/, system/core/, bootable/, *.rc
-version: 1.0.0
-android_version_tested: Android 15
+version: 1.1.0
+android_version_tested: Android 16
 parent_skill: aosp-root-router
 ---
 

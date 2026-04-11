@@ -3,7 +3,7 @@ name: <oem-or-soc>-<subsystem>-expert
 layer: L3
 path_scope: vendor/<oem>/, device/<oem>/
 version: 1.0.0
-android_version_tested: Android 15
+android_version_tested: Android 16
 parent_skill: <L2-parent-skill-name>
 ---
 
