@@ -1,7 +1,7 @@
 {
   "_schema_version": "1.0",
   "_description": "Dirty Page tracking for Android-SW-Owner Skill Set. A 'dirty' skill requires content refresh due to AOSP version changes or path structure updates.",
-  "_last_updated": "2026-04-12",
+  "_last_updated": "2026-04-16",
   "_android_version_baseline": "Android 16",
   "_research_note": "2026-04-12: Phase 5.1 A16 validation pass complete. All 13 skills updated to Android 16. Six previously dirty skills (security, multimedia, connectivity, kernel, ATF, pKVM) refreshed with A16 delta content from HS-033 through HS-039. Build and migration skills also updated with A16 content. Delta summary: references/a15_to_a16_delta_summary.md. Full source verification pending AOSP A16 source drop (expected Q2 2026).",
 
@@ -116,6 +116,14 @@
       "dirty_reason": null,
       "affected_paths": [],
       "_note": "Template skill for L3 OEM/SoC extensions. Not a real skill — used as a copy source."
+    },
+    "L3-qualcomm-kernel-expert": {
+      "status": "clean",
+      "android_version_tested": "Android 16 (GKI 6.12)",
+      "last_validated": "2026-04-16",
+      "dirty_reason": null,
+      "affected_paths": [],
+      "_note": "First real L3 OEM skill. Covers vendor/qcom/opensource/ + device/qcom/ + kernel/msm-*/. Parent: L2-kernel-gki-expert. Phase 6.1 deliverable."
     }
   },
 

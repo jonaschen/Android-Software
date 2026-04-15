@@ -10,10 +10,11 @@ Each test case represents a user task description and asserts:
 Usage:
     python3 tests/routing_accuracy/test_router.py
 
-Test suite: 100 cases (TC-001 – TC-100)
+Test suite: 105 cases (TC-001 – TC-105)
   - TC-001 – TC-026: Original single-skill cases (2 per skill, all 12 L2 skills)
   - TC-027 – TC-070: Additional single-skill cases (3-4 per skill)
   - TC-071 – TC-100: Multi-skill cross-domain scenarios (30 cases, ≥3-skill coverage)
+  - TC-101 – TC-105: L3 OEM routing scenarios (Qualcomm kernel; Phase 6.1)
 
 Phase 3 target: ≥95% routing accuracy on the full 100-case suite.
 
@@ -889,6 +890,62 @@ TEST_CASES: List[RoutingTestCase] = [
         notes="MULTI-SKILL: framework (@SystemApi, SystemServer) + HAL (new interface) "
               "+ virtualization (Microdroid isolated compute) + security (full SELinux stack). "
               "Maximum complexity scenario — tests all 4 top priority skills simultaneously.",
+    ),
+    # ---------------------------------------------------------------------------
+    # TC-101 – TC-105: L3 OEM routing scenarios (Phase 6.1 — Qualcomm kernel)
+    # ---------------------------------------------------------------------------
+    # NOTE: These cases route to the parent L2 skill (L2-kernel-gki-expert) because
+    # the live router only knows L2 skills. In a full L3-aware router, these would
+    # route to L3-qualcomm-kernel-expert. The notes document the L3 escalation path.
+    RoutingTestCase(
+        id="TC-101",
+        description="A Snapdragon 8 Elite (SM8750 / sun) device fails to load qca_cld3_wlan.ko with 'Unknown symbol in module' — the WLAN driver at vendor/qcom/opensource/wlan/qcacld-3.0/ was built against GKI 6.6 but the running kernel is an older build. Identify the KMI mismatch and the correct GKI branch.",
+        expected_paths=["vendor/qcom/opensource/wlan/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/qcom/opensource/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-qualcomm-kernel-expert "
+              "because qcacld-3.0 is a kernel module (not an AIDL HAL), and the issue is KMI compliance. "
+              "A full L3-aware router would route directly to L3-qualcomm-kernel-expert.",
+    ),
+    RoutingTestCase(
+        id="TC-102",
+        description="Camera pipeline on a Qualcomm Snapdragon 8 Gen 3 (kalama) device produces 'cam_smmu: iommu page fault addr 0xdeadbeef' in dmesg. The fault is in cam_isp/IFE during a ZSL capture. Identify the SMMU mapping bug in vendor/qcom/opensource/camera-kernel/.",
+        expected_paths=["vendor/qcom/opensource/camera-kernel/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/qcom/opensource/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-qualcomm-kernel-expert "
+              "because cam_smmu is a kernel IOMMU driver (not an AIDL HAL); the SMMU fault is below the HAL boundary. "
+              "A full L3-aware router would route directly to L3-qualcomm-kernel-expert.",
+    ),
+    RoutingTestCase(
+        id="TC-103",
+        description="ADSP crashes on boot with 'remoteproc adsp: crash detected' after adding a new FastRPC session in the audio HAL. The PIL log at /sys/kernel/debug/rproc/adsp/trace0 shows a watchdog timeout. Identify which firmware image in /vendor/firmware/ is being loaded and whether the APR transport is reinitializing.",
+        expected_paths=["vendor/qcom/opensource/audio-kernel/", "kernel/"],
+        expected_skill="L2-multimedia-audio-expert",
+        notes="L2 ROUTING: ADSP audio context routes to multimedia-audio-expert (audio HAL, FastRPC). "
+              "L3 ESCALATION: multimedia-audio-expert escalates to L3-qualcomm-kernel-expert "
+              "because the root cause is in PIL/remoteproc (kernel layer) loading adsp.mbn. "
+              "A full L3-aware router would route to L3-qualcomm-kernel-expert for the remoteproc/PIL analysis.",
+    ),
+    RoutingTestCase(
+        id="TC-104",
+        description="Building vendor/qcom/opensource/video-driver/ for an Android 16 GKI 6.12 target fails: 'implicit declaration of function ion_alloc'. The video codec driver still uses the ION allocator instead of DMA-BUF heaps. Migrate the driver to use dma_heap_buffer_alloc().",
+        expected_paths=["vendor/qcom/opensource/video-driver/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/qcom/opensource/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-qualcomm-kernel-expert "
+              "because ion_alloc→dma_heap_buffer_alloc is a kernel API migration, not a HAL interface change. "
+              "Also involves: version-migration-expert for A15→A16 ION deprecation timeline.",
+    ),
+    RoutingTestCase(
+        id="TC-105",
+        description="A new Qualcomm SoC vendor module for the IPA data accelerator at vendor/qcom/opensource/dataipa/ fails GKI ABI check: 'Symbol ipa_uc_wdi_get_ch_stats is not in the GKI symbol allowlist'. Determine whether to add the symbol to abi_gki_aarch64.xml or refactor the caller.",
+        expected_paths=["vendor/qcom/opensource/dataipa/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/qcom/opensource/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-qualcomm-kernel-expert "
+              "because the GKI ABI allowlist (abi_gki_aarch64.xml) is a kernel concern (KMI compliance). "
+              "A full L3-aware router would route directly to L3-qualcomm-kernel-expert.",
     ),
 ]
 
