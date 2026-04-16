@@ -10,11 +10,12 @@ Each test case represents a user task description and asserts:
 Usage:
     python3 tests/routing_accuracy/test_router.py
 
-Test suite: 105 cases (TC-001 – TC-105)
+Test suite: 110 cases (TC-001 – TC-110)
   - TC-001 – TC-026: Original single-skill cases (2 per skill, all 12 L2 skills)
   - TC-027 – TC-070: Additional single-skill cases (3-4 per skill)
   - TC-071 – TC-100: Multi-skill cross-domain scenarios (30 cases, ≥3-skill coverage)
   - TC-101 – TC-105: L3 OEM routing scenarios (Qualcomm kernel; Phase 6.1)
+  - TC-106 – TC-110: L3 OEM routing scenarios (MediaTek kernel; Phase 6.2)
 
 Phase 3 target: ≥95% routing accuracy on the full 100-case suite.
 
@@ -946,6 +947,66 @@ TEST_CASES: List[RoutingTestCase] = [
               "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-qualcomm-kernel-expert "
               "because the GKI ABI allowlist (abi_gki_aarch64.xml) is a kernel concern (KMI compliance). "
               "A full L3-aware router would route directly to L3-qualcomm-kernel-expert.",
+    ),
+
+    # ---------------------------------------------------------------------------
+    # TC-106 – TC-110: L3 OEM routing scenarios (Phase 6.2 — MediaTek kernel)
+    # ---------------------------------------------------------------------------
+    # NOTE: Like TC-101–TC-105, these route to the parent L2 skill because the
+    # live router only knows L2 skills. A full L3-aware router (Phase 6.4) would
+    # route `vendor/mediatek/kernel_modules/` paths directly to
+    # L3-mediatek-kernel-expert. The notes document the L2→L3 escalation path.
+    RoutingTestCase(
+        id="TC-106",
+        description="A Dimensity 9400 (MT6991) device fails to load wlan_drv_gen4m.ko with 'Unknown symbol in module' — the CONNSYS Wi-Fi driver at vendor/mediatek/kernel_modules/connectivity/wlan/ was built against GKI 6.6 but the running kernel is an older build. Identify the KMI mismatch and the correct GKI branch for MT6991.",
+        expected_paths=["vendor/mediatek/kernel_modules/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/mediatek/kernel_modules/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-mediatek-kernel-expert "
+              "because wlan_drv_gen4m is a CONNSYS kernel module (not an AIDL HAL), and the issue is KMI compliance. "
+              "A full L3-aware router would route directly to L3-mediatek-kernel-expert.",
+    ),
+    RoutingTestCase(
+        id="TC-107",
+        description="Camera pipeline on a MediaTek Dimensity 9300 (MT6989) device produces 'mtk_iommu: fault iova=0xdeadbeef, master=CAMSYS_PASS1' in dmesg during a high-res burst capture. The fault points to the Pass-1 sensor input in vendor/mediatek/kernel_modules/mtk_cam/seninf/. Identify the IOMMU port mapping bug.",
+        expected_paths=["vendor/mediatek/kernel_modules/mtk_cam/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/mediatek/kernel_modules/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-mediatek-kernel-expert "
+              "because mtk_iommu / SENINF is a kernel IOMMU driver (not an AIDL HAL); "
+              "the fault is below the HAL boundary and requires MTK IOMMU port-mapping knowledge. "
+              "A full L3-aware router would route directly to L3-mediatek-kernel-expert.",
+    ),
+    RoutingTestCase(
+        id="TC-108",
+        description="Audio HAL on a Dimensity 9300 (MT6989) device reports AudioFlinger session teardowns after SCP (System Companion Processor) crashes with 'scp: watchdog timeout, resetting'. MTK audio DSP firmware loaded from /vendor/firmware/scp.img is resetting, and the audio HAL IPI transport in vendor/mediatek/kernel_modules/mtk_audio/audio_scp/ is tearing down sessions. Diagnose the audio HAL offload path.",
+        expected_paths=["vendor/mediatek/kernel_modules/mtk_audio/", "frameworks/av/services/audioflinger/"],
+        expected_skill="L2-multimedia-audio-expert",
+        notes="L2 ROUTING: AudioFlinger + audio HAL offload path routes to multimedia-audio-expert. "
+              "L3 ESCALATION: multimedia-audio-expert escalates to L3-mediatek-kernel-expert "
+              "because the root cause is in the SCP firmware loader (kernel layer) authenticated by MTK TEE. "
+              "A full L3-aware router would route to L3-mediatek-kernel-expert for the scp/remoteproc analysis.",
+    ),
+    RoutingTestCase(
+        id="TC-109",
+        description="Building vendor/mediatek/kernel_modules/mtk_disp/ for an Android 16 GKI 6.12 target on MT6991 fails: 'implicit declaration of function mtk_ion_alloc'. The MDP display driver still uses the legacy MTK ION allocator instead of DMA-BUF heaps. Migrate the driver to use dma_heap_buffer_alloc() with the mtk_mm-uncached heap.",
+        expected_paths=["vendor/mediatek/kernel_modules/mtk_disp/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/mediatek/kernel_modules/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-mediatek-kernel-expert "
+              "because mtk_ion_alloc→dma_heap_buffer_alloc is a kernel API migration, not a HAL interface change. "
+              "Also involves: version-migration-expert for A15→A16 MTK ION deprecation timeline.",
+    ),
+    RoutingTestCase(
+        id="TC-110",
+        description="A new MediaTek vendor module for the EMI MPU driver at vendor/mediatek/kernel_modules/mtk_emi/ fails GKI ABI check with 'Symbol emi_mpu_set_protection is not in the GKI symbol allowlist'. The module is a vendor kernel module under vendor/mediatek/; determine how to refactor it for KMI compliance.",
+        expected_paths=["vendor/mediatek/kernel_modules/mtk_emi/", "kernel/"],
+        expected_skill="L2-hal-vendor-interface-expert",
+        notes="L2 ROUTING: vendor/mediatek/kernel_modules/ matches hal-vendor-interface-expert (vendor/ path scope). "
+              "L3 ESCALATION: hal-vendor-interface-expert escalates to L3-mediatek-kernel-expert "
+              "because the GKI ABI allowlist (abi_gki_aarch64.xml) is a kernel concern (KMI compliance), "
+              "and the remediation (SMC call to BL31 instead of direct MPU register access) crosses to ATF expert. "
+              "A full L3-aware router would route directly to L3-mediatek-kernel-expert.",
     ),
 ]
 

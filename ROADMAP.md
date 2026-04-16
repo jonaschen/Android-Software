@@ -9,20 +9,20 @@
 
 ## Project Status Summary
 
-> **As of:** 2026-04-10
+> **As of:** 2026-04-17
 
 | Area | Status | Notes |
 |------|--------|-------|
 | Architecture & Design | ✅ Complete | `CLAUDE.md`, `AGENTS.md`, `ANDROID_SW_OWNER_DEV_PLAN.md` v1.4 finalized |
-| `skills/` directory | ✅ Phase 2 complete | L1 router + all 12 L2 expert skills deployed; handoff rules standardized (Phase 3) |
-| `memory/` directory | ✅ Phase 3 complete | 22 hindsight notes, `cross_skill_triggers.md` (12 patterns), `dirty_pages.json` validated |
-| `tests/` directory | ✅ Phase 3 complete | `test_router.py` with 100 routing cases (30 multi-skill cross-domain) |
+| `skills/` directory | ✅ Phase 2 complete | L1 router + 12 L2 expert skills + 2 L3 OEM skills (Qualcomm, MediaTek) deployed |
+| `memory/` directory | ✅ Phase 3 complete | 44 hindsight notes, `cross_skill_triggers.md` (12 patterns), `dirty_pages.json` validated |
+| `tests/` directory | ✅ Phase 3 complete | `test_router.py` with 110 routing cases (30 multi-skill cross-domain, 10 L3 OEM) |
 | `references/` directory | ✅ Phase 2 complete | `aosp_top_level_paths.md` v1.2 (49 path entries) |
 | `scripts/` directory | ✅ Phase 4 complete | `validate_dirty_pages.py`, `detect_dirty_pages.py`, `migration_impact.py`, `skill_lint.py` |
-| Git history | Active | Phase 1–5 deliverables complete; Phase 6 started 2026-04-16 |
+| Git history | Active | Phase 1–5 deliverables complete; Phase 6 in progress (6.1, 6.2 done; 6.3–6.5 planned) |
 
 ### Current Phase
-**Phase 6 — In Progress** (OEM/SoC L3 skill buildout — 6.1 done, 6.2–6.5 planned)
+**Phase 6 — In Progress** (OEM/SoC L3 skill buildout — 6.1, 6.2 done; 6.3–6.5 planned)
 
 Phase 5 — Complete ✅ (all deliverables 5.1–5.5 done)
 
@@ -226,7 +226,7 @@ Each L2 skill must include:
 | # | Task | Output | Status |
 |---|------|--------|--------|
 | 6.1 | Qualcomm kernel L3 skill | `skills/L3-qualcomm-kernel-expert/` — first real L3 OEM skill; covers `vendor/qcom/opensource/` + `device/qcom/` + `kernel/msm-*/`; KMI audit script; SoC architecture reference; 5 routing test cases (TC-101–TC-105) | ✅ Done |
-| 6.2 | MediaTek kernel L3 skill | `skills/L3-mediatek-kernel-expert/` — second L3 OEM skill; covers `vendor/mediatek/kernel_modules/`; combo chip driver architecture; MTK preloader awareness | ⏳ Planned |
+| 6.2 | MediaTek kernel L3 skill | `skills/L3-mediatek-kernel-expert/` — second L3 OEM skill; covers `vendor/mediatek/kernel_modules/` + `vendor/mediatek/proprietary/` + `device/mediatek/` + `kernel/mediatek/`; MTK KMI audit script with red-flag symbol detection; TINYSYS (SCP/SSPM/ADSP) architecture reference; 5 routing test cases (TC-106–TC-110); HS-044 hindsight note | ✅ Done |
 | 6.3 | Q2 2026 AOSP source drop response | When AOSP A16 source lands: run `detect_dirty_pages.py`, generate migration impact report, update all affected skills | ⏳ Pending source drop |
 | 6.4 | L3-aware routing upgrade | Extend `test_router.py` live router to load L3 skills from `skills/L3-*/SKILL.md`; route `vendor/<oem>/` paths to L3 before L2; target: TC-101–TC-105 route to L3-qualcomm-kernel-expert | ⏳ Planned |
 | 6.5 | Phase 6 research log | Track Android 16 QPR1 (Q3 2026), ASB updates, GKI 6.12 LTS stability status | ⏳ Ongoing |
@@ -266,4 +266,4 @@ Each L2 skill must include:
 
 ---
 
-*Roadmap v1.5 — Phase 6 started (2026-04-16): Phase 6.1 complete — L3-qualcomm-kernel-expert deployed (vendor/qcom/opensource/, device/qcom/, kernel/msm-*/); KMI audit script; SoC codename/GKI branch reference; 5 L3 routing test cases (TC-101–TC-105); HS-042 hindsight note. dirty_pages.json updated to 15 skills. Routing accuracy 105/105 (100%). Phase 5 complete (2026-04-12): All deliverables 5.1–5.5 done. Phase 5.1 (2026-04-12): A16 validation pass — all 13 skills updated to Android 16, 6 dirty skills refreshed with A16 deltas from HS-033–HS-039, a15_to_a16_delta_summary.md created, dirty_pages.json baseline set to Android 16. Phase 5.2 (2026-04-11): GBL bootloader skill refresh. Phase 5.3 (2026-04-10): 16KB page migration guide. Phase 5.4 (2026-04-10): Live routing benchmark 100%. Phase 5.5 (2026-04-10): Documentation refresh. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*
+*Roadmap v1.6 — Phase 6.2 complete (2026-04-17): L3-mediatek-kernel-expert deployed (vendor/mediatek/kernel_modules/, vendor/mediatek/proprietary/, device/mediatek/, kernel/mediatek/); MTK KMI audit script with red-flag symbol detection; TINYSYS (SCP/SSPM/ADSP) architecture reference; 5 L3 routing test cases (TC-106–TC-110); HS-044 hindsight note with QC↔MTK analogy table. dirty_pages.json updated to 16 skills. Routing accuracy 110/110 (100%). Phase 6 gate (≥2 L3 OEM skills) satisfied. Phase 6.1 (2026-04-16): L3-qualcomm-kernel-expert deployed (vendor/qcom/opensource/, device/qcom/, kernel/msm-*/); KMI audit script; SoC codename/GKI branch reference; 5 L3 routing test cases (TC-101–TC-105); HS-042 hindsight note. Phase 5 complete (2026-04-12): All deliverables 5.1–5.5 done. Phase 5.1 (2026-04-12): A16 validation pass — all 13 skills updated to Android 16, 6 dirty skills refreshed with A16 deltas from HS-033–HS-039, a15_to_a16_delta_summary.md created, dirty_pages.json baseline set to Android 16. Phase 5.2 (2026-04-11): GBL bootloader skill refresh. Phase 5.3 (2026-04-10): 16KB page migration guide. Phase 5.4 (2026-04-10): Live routing benchmark 100%. Phase 5.5 (2026-04-10): Documentation refresh. Derived from ANDROID_SW_OWNER_DEV_PLAN.md v1.4*
