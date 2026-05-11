@@ -53,3 +53,6 @@ vendor/
 !references/
 !Storage_checking_report.md
 fake_hardware/
+test_large.rc
+benchmark*
+__pycache__
